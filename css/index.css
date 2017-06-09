@@ -1,0 +1,11 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+body{
+	margin-top: 0;
+	background-color: #99ffee;
+}
+#navbar{
+	margin-bottom: 0;
+}
