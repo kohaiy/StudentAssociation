@@ -9,7 +9,7 @@ $(function() {
         	$('#navbar').addClass('navbar-fixed-top');
         	$('body').css('margin-top','50px');
             $(this).attr('data', 1);
-            $(this).css('color', 'green');
+            $(this).css('color', '#3c763d');
         }
     });
 });
