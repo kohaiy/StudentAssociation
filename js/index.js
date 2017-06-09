@@ -1,4 +1,5 @@
 $(function() {
+	$('[data-toggle="tooltip"]').tooltip();
     $('#navbar-lock').click(function() {
         if ($(this).attr('data') == 1) {
         	$('#navbar').removeClass('navbar-fixed-top');
