@@ -1,11 +1,59 @@
-*{
-	margin: 0;
-	padding: 0;
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "微软雅黑";
 }
-body{
-	margin-top: 0;
-	background-color: #99ffee;
+
+body {
+    margin-top: 0;
 }
-#navbar{
-	margin-bottom: 0;
+
+#navbar {
+    margin-bottom: 0;
+}
+
+#fixed-tools {
+    position: fixed;
+    right: 20px;
+    bottom: 50px;
+}
+
+#fixed-tools>div {
+    width: 50px;
+    text-align: center;
+    height: 55px;
+    line-height: 50px;
+    overflow: hidden;
+    font-size: 20px;
+}
+
+#fixed-tools>div>div {
+    background-color: #337ab7;
+    color: white;
+    cursor: pointer;
+}
+
+#to-top:hover span:before {
+    font-size: 15px;
+    line-height: 1.1;
+    display: inline-block;
+    width: 30px;
+    position: relative;
+    top: 5px;
+    content: "回到顶部";
+}
+
+#to-bottom:hover span:before {
+    font-size: 15px;
+    line-height: 1.1;
+    display: inline-block;
+    width: 30px;
+    position: relative;
+    top: 5px;
+    content: "跳到底部";
+}
+
+#to-top {
+    /*margin-bottom: 2px;*/
+    display: none;
 }
