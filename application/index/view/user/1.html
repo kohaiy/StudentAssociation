@@ -1,0 +1,22 @@
+<div class="container-fuild">
+    <div class="col-md-2">
+        <div class="panel panel-default text-center">
+            <table class="table table-hover">
+                <tr>
+                    <td><a href="__ROOT__/index/user/index.html">个人中心</a></td>
+                </tr>
+                <tr>
+                    <td><a href="__ROOT__/index/user/association.html">同乡会</a></td>
+                </tr>
+                <tr>
+                    <td><a href="__ROOT__/index/user/post.html">我的帖子</a></td>
+                </tr>
+                {eq name="$role" value="0"}
+                <tr>
+                    <td><a href="__ROOT__/index/user/as_manager.html">同乡会管理</a></td>
+                </tr>{/eq}
+            </table>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <div class="panel panel-default">

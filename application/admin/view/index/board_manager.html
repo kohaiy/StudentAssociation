@@ -1,0 +1,58 @@
+<div class="col-sm-8 col-sm-offset-2">
+    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#addBoard">添加版块</button>
+    {if condition="$list == null"}
+    <p class="bg-info">没有数据！</p>
+    {else /}
+    <table class="table table-hover">
+        <caption class="text-center">版块列表</caption>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>排序</th>
+                <th>版块名称</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {volist name="list" id="vo" }
+            <tr>
+                <td>{$vo.id}</td>
+                <td>{$vo.sort}</td>
+                <td>{$vo.name}</td>
+                <td>
+                    <button type="button" class="btn btn-primary">修改</button>
+                    <button type="button" class="btn btn-danger">删除</button>
+                </td>
+            </tr>
+            {/volist}
+        </tbody>
+    </table>
+    {/if}
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="addBoard">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">添加版块</h4>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    <div class="form-group has-feedback">
+                        <input type="hidden" name="action" value="addBoard">
+                        <label class="control-label" for="name">版块名称</label>
+                        <input type="text" class="form-control" id="name" placeholder="版块名称" name="name">
+                        <span id="nameIcon" class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <span id="nameHint" class="help-block"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">添加</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

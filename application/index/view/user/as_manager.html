@@ -1,0 +1,26 @@
+{extend name="common/base" /} {block name="title"}用户中心{__block__}{/block} {block name="footer"}用户中心{__block__}{/block} {block name="js"}
+<script src="__STATIC__/js/index/user/as_manager.js"></script>{/block} {block name="content"} {include file="user/1"}
+<ol class="breadcrumb">
+    <li>首页</li>
+    <li class="active" id="route">同乡会管理</li>
+</ol>
+<div class="panel-body">
+    <div class="clearfix" style="min-height: 200px;">
+        <div id="as-content-panel" class="text-center">
+            <ul class="nav nav-tabs" role="tablist" id="tags">
+                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">基本信息</a></li>
+                <li role="presentation"><a href="#board" aria-controls="board" role="tab" data-toggle="tab">版块管理</a></li>
+                <li role="presentation"><a href="#notice" aria-controls="notice" role="tab" data-toggle="tab">公告管理</a></li>
+                <li role="presentation"><a href="#manager" aria-controls="manager" role="tab" data-toggle="tab">管理员</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">基本信息</div>
+                <div role="tabpanel" class="tab-pane" id="board">版块管理</div>
+                <div role="tabpanel" class="tab-pane" id="notice">公告管理</div>
+                <div role="tabpanel" class="tab-pane" id="manager">管理员</div>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="user/2"} {/block}

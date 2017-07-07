@@ -1,0 +1,41 @@
+{extend name="common/base" /}
+{block name="title"}帖子编辑{__block__}{/block}
+{block name="footer"}帖子编辑{__block__}{/block}
+{block name="css"}<link rel="stylesheet" type="text/css" href="__STATIC__/css/index/post/send.css">{/block}
+{block name="js"}<script src="__ROOT__/ueditor/ueditor.config.js"></script>
+<script src="__ROOT__/ueditor/ueditor.all.min.js"></script>
+<script src="__STATIC__/js/index/post/send.js"></script>{/block}
+{block name="content"}
+<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+    <div class="panel panel-info">
+        <ol class="breadcrumb">
+            <li>当前位置： <a href="__ROOT__/index.html">首页</a></li>
+            <li>{if condition="$sa == null "}<a href="__ROOT__/index/square.html" title="广场">广场</a>{else /}<a href="__ROOT__/index.html" title="我的同乡会">我的同乡会</a>{/if}</li>
+            <li><a href="__ROOT__/index/board.html?id={$board.id}">{$board.name}</a></li>
+            <li class="active">{$post.title}</li>
+        </ol>
+        <div class="panel-body">
+            <form action="" method="post" id="myForm">
+                <input type="hidden" name="pid" value="{$post.pid}">
+                <div class="form-group">
+                    <label for="title">帖子标题</label>
+                    <input type="text" name="title" class="form-control" id="title" placeholder="帖子标题" value="{$post.title}">
+                </div>
+                <div class="form-group">
+                    <label for="contents">帖子内容</label>
+                    <script id="editor" name="content" type="text/plain" style="width:100%;height:200px;">{$post.content}</script>
+                </div>
+                <div class="form-group">
+                    <label for="tags">帖子标签 <small id="helpBlock" class="text-info"><abbr title="多个标签使用空格分割。" class="initialism">帮助</abbr></small></label>
+                    <input type="text" name="tags" class="form-control" id="tags" placeholder="帖子标签" value="{$post.tags}">
+                    
+                    <div id="tags-show" class=help-block></div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-success" id="submit" value="修改帖子">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{/block}

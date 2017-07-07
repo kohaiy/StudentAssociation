@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{block name="title"} - 后台管理中心{/block}</title>
+    <link href="__STATIC__/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/admin/common/base.css">
+    {block name="css"}{/block}
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="bg-success">
+    <!-- 导航 -->
+    <nav id="navbar" class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" id="logo" href="__ROOT__/admin.html">
+                    <img alt="Brand" src="__STATIC__/img/index/index/logo.png" alt="同乡网" title="同乡网">
+                </a>
+                <a class="navbar-brand" href="__ROOT__/admin.html">后台管理中心</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <!-- <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">我的同乡会</a></li>
+                    <li><a href="#">广场</a></li>
+                </ul> -->
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a>欢迎您，{$Think.session.admin.name}！</a></li>
+                    <li><a href="__ROOT__/admin/user/logout.html"><span class="glyphicon glyphicon-log-out"></span> 注销</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- /导航条 -->
+    <!-- 正文内容 -->
+    
+    <div id="page-content">
+        {block name="content"}{/block}
+    </div>
+
+    <!-- /正文内容 -->
+
+    <div id="toast" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <h4 id="content" class="text-center"></h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入js插件 -->
+    <script src="__STATIC__/js/jquery.min.js"></script>
+    <script src="__STATIC__/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    var ROOT = '__ROOT__';
+    var STATIC = '__STATIC__';
+    </script>
+    <script src="__STATIC__/js/admin/common/base.js"></script>
+    {block name="js"}{/block}
+</body>
+
+</html>

@@ -1,0 +1,106 @@
+<div class="col-sm-8 col-sm-offset-2">
+    <table class="table table-border-none">
+        <tr>
+            <td>
+                <select id="provinces" class="form-control">
+                    <option>未选择</option>
+                </select>
+            </td>
+            <td>
+                <button id="addProvince" class="btn btn-default" type="button" data-toggle="modal" data-target="#addProvincePanel">添加省份</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <select id="cities" class="form-control">
+                    <option>未选择</option>
+                </select>
+            </td>
+            <td>
+                <button id="addCity" class="btn btn-default" type="button" data-toggle="modal" data-target="#addCityPanel">添加城市</button>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <select id="schools" class="form-control">
+                    <option>未选择</option>
+                </select>
+            </td>
+            <td>
+                <button id="addSchool" class="btn btn-default" type="button" data-toggle="modal" data-target="#addSchoolPanel">添加学校</button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="addProvincePanel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">添加省份</h4>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    <div class="form-group has-feedback">
+                        <label class="control-label" for="province">省份名称</label>
+                        <input type="text" class="form-control" id="province" placeholder="省份名称" name="province">
+                        <span id="nameIcon" class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <span id="nameHint" class="help-block"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">添加</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="addCityPanel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">添加城市</h4>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    <div class="form-group has-feedback">
+                        <label class="control-label" for="city">城市名称</label>
+                        <input type="text" class="form-control" id="city" placeholder="城市名称" name="city">
+                        <span id="nameIcon" class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <span id="nameHint" class="help-block"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">添加</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="addSchoolPanel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">添加学校</h4>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    <div class="form-group has-feedback">
+                        <label class="control-label" for="name">学校名称</label>
+                        <input type="text" class="form-control" id="name" placeholder="学校名称" name="name">
+                        <span id="nameIcon" class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <span id="nameHint" class="help-block"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">添加</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

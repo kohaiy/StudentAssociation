@@ -1,0 +1,62 @@
+<div class="col-sm-8 col-sm-offset-2">
+    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#addManager">添加管理员</button>
+    {if condition="$list == null"}
+    <p class="bg-info">没有数据！</p>
+    {else /}
+    <table class="table table-hover">
+        <caption class="text-center">管理员列表</caption>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>用户名</th>
+                <th>角色</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {volist name="list" id="vo" }
+            <tr>
+                <td>{$vo.id}</td>
+                <td>{$vo.name}</td>
+                <td>{eq name="$vo.role" value="1"}管理员{else/}<span class="text-primary">超级管理员</span>{/eq}
+                </td>
+                <td><button type="button" class="btn btn-danger" {eq name="$vo.role" value="0"}disabled="disabled"{/eq}>删除</button></td>
+            </tr>
+            {/volist}
+        </tbody>
+    </table>
+    {/if}
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="addManager">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">添加管理员</h4>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="action" value="addManager">
+                    <div class="form-group has-feedback">
+                        <label class="control-label" for="username">管理员用户名</label>
+                        <input type="text" class="form-control" id="username" placeholder="管理员用户名" name="username">
+                        <span id="usernameIcon" class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <span id="usernameHint" class="help-block"></span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label class="control-label" for="password">密码</label>
+                        <input type="password" class="form-control" id="password" placeholder="默认密码为123456" name="password" readonly>
+                        <span id="passwordIcon" class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <span id="passwordHint" class="help-block"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary">添加</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

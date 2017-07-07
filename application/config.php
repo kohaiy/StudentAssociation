@@ -141,8 +141,8 @@ return [
     // 视图输出字符串内容替换
     'view_replace_str'       => [],
     // 默认跳转页面对应的模板文件
-    'dispatch_success_tmpl'  => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
-    'dispatch_error_tmpl'    => THINK_PATH . 'tpl' . DS . 'dispatch_jump.tpl',
+    'dispatch_success_tmpl'  => APP_PATH.DS.'common'.DS.'view'.DS.'dispatch_jump.tpl',
+    'dispatch_error_tmpl'    => APP_PATH.DS.'common'.DS.'view'.DS.'dispatch_jump.tpl',
 
     // +----------------------------------------------------------------------
     // | 异常及错误设置
@@ -235,5 +235,24 @@ return [
         'type'      => 'bootstrap',
         'var_page'  => 'page',
         'list_rows' => 15,
+    ],
+
+    'captcha'  => [
+        // 验证码字符集合
+        'codeSet'  => '2345678abcdefhijkmnpqrstuvwxyzABCDEFGHJKLMNPQRTUVWXY', 
+        // 验证码字体大小(px)
+        'fontSize' => 25, 
+        // 是否画混淆曲线
+        'useCurve' => false, 
+         // 验证码图片高度
+        'imageH'   => 50,
+        // 验证码图片宽度
+        'imageW'   => 200, 
+        // 验证码位数
+        'length'   => 4, 
+        // 验证成功后是否重置        
+        'reset'    => true,
+        // 使用背景图片
+        'useImgBg' => false,
     ],
 ];

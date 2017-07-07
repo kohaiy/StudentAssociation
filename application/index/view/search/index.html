@@ -1,0 +1,43 @@
+{extend name="common/base" /}
+{block name="title"}搜索{__block__}{/block}
+{block name="footer"}搜索{__block__}{/block}
+{block name="search"}{$skey}{/block}
+{block name="content"}
+<div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
+    <div class="panel panel-info">
+        <ol class="breadcrumb">
+            <li>当前位置： <a href="__ROOT__/index.html">首页</a></li>
+            <li>帖子搜索</li>
+            <li class="active">{$skey}</li>
+        </ol>
+        <div class="panel-body">
+        {if condition="$list == null"}
+            <div class="text-center">
+                当前未搜索到任何帖子，赶紧换一个关键词吧！
+            </div>
+        {else /}
+            <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="hidden-xs">帖子编号</th>
+                    <th>帖子标题</th>
+                    <th>发布者</th>
+                    <th class="hidden-xs" style="width: 180px;">发表时间</th>
+                </tr>
+            </thead>
+            <tbody>
+            {volist name="list" id="vo" key="ks" empty="没有帖子！"}
+                <tr>
+                    <td class="hidden-xs">{$vo.pid}</td>
+                    <td><a href="__ROOT__/index/post.html?id={$vo.pid}" title="{$vo.title}">{$vo.title|str_replace=$skey,"<font color='#d9534f'><b>$skey</b></font>",###}</a></td>
+                    <td>{$vo.user.nickname}</td>
+                    <td class="hidden-xs">{$vo['create_time']}</td>
+                </tr>
+            {/volist}
+            </tbody>
+            </table>
+        {/if}
+        </div>
+    </div>
+</div>
+{/block}

@@ -1,44 +1,36 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>用户注册中心</title>
-    <link href="__STATIC__/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
- 
-<body class="bg-success">
-    <div class="container">
-        <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-xs-12 col-sm-8 col-sm-offset-2">
-            <div class="panel panel-primary">
-                <div class="panel-heading">用户注册中心</div>
-                <div class="panel-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="username">用户名</label>
-                            <input type="text" class="form-control" id="username" placeholder="Username">
-                        </div>
-                        <div class="form-group">
-                            <label for="password">密码</label>
-                            <input type="password" class="form-control" id="password" placeholder="Password">
-                        </div>
-                        <a href="__ROOT__/index/user/login.html" class="btn btn-default">登录</a>
-                        <button type="submit" class="btn btn-primary pull-right">注册</button>
-                        <button type="button" class="btn btn-link pull-right">忘记密码？</button>
-                    </form>
+{extend name="common/base" /}
+{block name="title"}用户注册中心{__block__}{/block}
+{block name="footer"}用户注册中心{__block__}{/block}
+{block name="js"}<script src="__STATIC__/js/index/user/register.js"></script>{/block}
+{block name="content"}
+<div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
+    <div class="panel panel-primary">
+        <div class="panel-heading">用户注册中心</div>
+        <div class="panel-body">
+            <form id="regForm" method="post" action="">
+                <div class="form-group has-feedback">
+                    <label class="control-label" for="username">用户名</label>
+                    <input type="text" class="form-control" id="username" placeholder="请输入用户名" name="username">
+                    <span id="usernameIcon" class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                    <span id="usernameHint" class="help-block"></span>
                 </div>
-            </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label" for="password">密码</label>
+                    <input type="password" class="form-control" id="password" placeholder="请输入密码" name="password">
+                    <span id="passwordIcon" class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                    <span id="passwordHint" class="help-block"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <label class="control-label" for="password2">验证密码</label>
+                    <input type="password" class="form-control" id="password2" placeholder="请再次输入密码">
+                    <span id="password2Icon" class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                    <span id="password2Hint" class="help-block"></span>
+                </div>
+                <a href="__ROOT__/index/user/login.html" class="btn btn-default">登录</a>
+                <button type="submit" class="btn btn-primary pull-right">注册</button>
+                <button type="button" class="btn btn-link pull-right">忘记密码？</button>
+            </form>
         </div>
     </div>
-    <!-- 引入js插件 -->
-    <script src="__STATIC__/js/jquery.min.js"></script>
-    <script src="__STATIC__/bootstrap/js/bootstrap.min.js"></script>
-</body>
-
-</html>
+</div>
+{/block}

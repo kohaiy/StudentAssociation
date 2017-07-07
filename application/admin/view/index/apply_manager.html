@@ -1,0 +1,118 @@
+<div class="panel-body">
+    <table class="table table-hover">
+        <caption class="text-center h4">
+            申请列表
+        </caption>
+        <thead>
+            <tr>
+                <th>申请编号</th>
+                <th>申请人</th>
+                <th>学校名称</th>
+                <th>申请名称</th>
+                <th>申请时间</th>
+                <th>申请结果</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {volist name="list" id="vo"}
+            <tr>
+                <td>
+                    {$vo.id}
+                </td>
+                <td>
+                    {$vo.user.nickname}
+                </td>
+                <td>
+                    {$vo.school['sname']}
+                </td>
+                <td>
+                    {$vo.sname}
+                </td>
+                <td>
+                    {$vo.create_time}
+                </td>
+                <td>
+                    {switch name="$vo.status" } {case value="0"}
+                    <span class="text-info glyphicon glyphicon-refresh">
+                        审核中
+                    </span> {/case} {case value="1"}
+                    <span class="text-success glyphicon glyphicon-ok-sign">
+                        通过
+                    </span> {/case} {default /}
+                    <span class="text-danger glyphicon glyphicon-remove-sign">
+                        不通过
+                    </span> {/switch}
+                </td>
+                <td>
+                    <button class="btn btn-primary btn-sm action" data="{$vo.id}" type="button">
+                        详情
+                    </button>
+                </td>
+            </tr>
+            {/volist}
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="detail" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title">
+                    申请详情
+                </h4>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    <table class="table">
+                        <tr>
+                            <th>申请人</th>
+                            <td id="uid">loading</td>
+                        </tr>
+                        <tr>
+                            <th>所属学校</th>
+                            <td id="school">loading</td>
+                        </tr>
+                        <tr>
+                            <th>同乡会名称</th>
+                            <td id="sname">loading</td>
+                        </tr>
+                        <tr>
+                            <th>申请理由</th>
+                            <td id="reason">loading</td>
+                        </tr>
+                        <tr>
+                            <th>申请结果</th>
+                            <td id="status">loading</td>
+                        </tr>
+                        <tr>
+                            <th>申请时间</th>
+                            <td id="create-time">loading</td>
+                        </tr>
+                        <tr>
+                            <th>审核时间</th>
+                            <td id="reply-time">loading</td>
+                        </tr>
+                    </table>
+                    <div class="form-group">
+                        <label class="control-label" for="msg">审核备注</label>
+                        <textarea class="form-control" id="msg" name="msg" placeholder="审核备注"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input name="aid" type="hidden" value="">
+                    <input type="hidden" name="action" value="applysa">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button class="btn btn-danger" type="submit" name="reject">拒绝</button>
+                    <button class="btn btn-success" type="submit" name="accept">接受</button>
+                    </input>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
