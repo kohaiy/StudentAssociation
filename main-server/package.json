@@ -1,0 +1,20 @@
+{
+  "name": "student-association-main",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "ioredis": "^3.2.2",
+    "jsonwebtoken": "^8.1.1",
+    "koa": "^2.4.1",
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.3.0",
+    "koa-session2": "^2.2.5",
+    "koa2-cors": "^2.0.5",
+    "log4js": "^2.4.1",
+    "mongoose": "^5.0.3",
+    "nodemailer": "^4.4.2",
+    "nodemon": "^1.14.7"
+  }
+}

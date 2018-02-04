@@ -1,0 +1,19 @@
+$fa-font-path: "./../../../node_modules/font-awesome/fonts";
+//$fa-css-prefix: el-icon-fa;
+@import "./../../../node_modules/font-awesome/scss/font-awesome.scss";
+
+[class^="fa"],
+[class*=" fa"] {
+  font-family: FontAwesome, "Microsoft YaHei", "黑体", serif !important;
+}
+
+//[class^="el-icon-fa"], [class*=" el-icon-fa"] {
+//  display: inline-block;
+//  font-family: FontAwesome, "Microsoft Sans Serif", serif;
+//  //font: normal normal normal 14px/1 FontAwesome !important;
+//  font-size: inherit;
+//  text-rendering: auto;
+//  -webkit-font-smoothing: antialiased;
+//  -moz-osx-font-smoothing: grayscale;
+//}
+

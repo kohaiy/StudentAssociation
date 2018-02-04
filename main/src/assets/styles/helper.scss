@@ -1,0 +1,76 @@
+@import "variables";
+
+// font color
+.text-primary {
+  color: $--color-primary !important;
+}
+
+.text-success {
+  color: $--color-success !important;
+}
+
+.text-info {
+  color: $--color-info !important;
+}
+
+.text-warning {
+  color: $--color-warning !important;
+}
+
+.text-danger {
+  color: $--color-danger !important;
+}
+
+// background color
+.bg-primary {
+  color: #ffffff;
+  background-color: $--color-primary !important;
+}
+
+.bg-success {
+  background-color: $--color-success !important;
+}
+
+.bg-info {
+  background-color: $--color-info !important;
+}
+
+.bg-warning {
+  background-color: $--color-warning !important;
+}
+
+.bg-danger {
+  background-color: $--color-danger !important;
+}
+
+// float
+.pull-left {
+  float: left !important;
+}
+
+.pull-right {
+  float: right !important;
+}
+
+// clearfix
+.clearfix {
+  &:before,
+  &:after {
+    content: " ";
+    display: table;
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+// make a block center
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.text-center {
+  text-align: center;
+}
