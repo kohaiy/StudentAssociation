@@ -16,7 +16,7 @@ class BaseService {
                     if (error.errors.hasOwnProperty(key))
                         errs.push(error.errors[key].message);
                 }
-                return this.failure(errs.join('\n'));
+                return this.failure(errs.join('\n'), 406);
             }
             return false;
         }

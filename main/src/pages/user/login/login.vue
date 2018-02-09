@@ -13,7 +13,8 @@
             <el-input v-model="loginForm.username"></el-input>
           </el-form-item>
           <el-form-item label="密码">
-            <el-input type="password" v-model="loginForm.password"></el-input>
+            <el-input type="password" v-model="loginForm.password"
+                      @keyup.enter.native="doLogin"></el-input>
           </el-form-item>
           <el-form-item class="clearfix">
             <el-checkbox v-model="loginForm.isRemember">记住密码</el-checkbox>
@@ -33,22 +34,41 @@
 </template>
 
 <script>
+import UserService from './../../../service/UserService';
+
 export default {
   name: 'login',
+  mounted() {
+    this.checkUserStatus();
+  },
   data() {
     return {
       loginForm: {
-        username: '',
-        password: '',
+        username: 'kohai',
+        password: '123123',
         isRemember: true,
       },
     };
   },
   methods: {
     doLogin() {
-      this.api.post('/user', { username: 'kohai', password: '123123' }).then((res) => {
-        this.$message.success(`token: ${JSON.stringify(res.data.data)}`);
-      });
+      UserService.login(this.loginForm.username, this.loginForm.password)
+        .then(() => {
+          this.$message.success('登录成功！');
+          this.checkUserStatus();
+        })
+        .catch((data) => {
+          console.log(data);
+          this.$error(data.message);
+        });
+    },
+    checkUserStatus() {
+      UserService.getUser()
+        .then(() => {
+          this.$router.replace({
+            path: this.$route.query.redirect || '/',
+          });
+        });
     },
   },
   components: {},

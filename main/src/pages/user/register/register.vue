@@ -16,12 +16,15 @@
             <el-input type="password" v-model="registerForm.password"></el-input>
           </el-form-item>
           <el-form-item label="确认密码">
-            <el-input type="password" v-model="registerForm.password2"></el-input>
+            <el-input @keyup.enter.native="doRegister"
+                      type="password" v-model="registerForm.password2"></el-input>
           </el-form-item>
           <el-form-item class="clearfix">
             还没有账号？
-            <router-link to="/login"><el-button type="text" to="/login">登录</el-button></router-link>
-            <el-button type="primary" class="pull-right">注册</el-button>
+            <router-link to="/login">
+              <el-button type="text" to="/login">登录</el-button>
+            </router-link>
+            <el-button @click="doRegister" type="primary" class="pull-right">注册</el-button>
           </el-form-item>
         </el-form>
       </el-col>
@@ -30,6 +33,8 @@
 </template>
 
 <script>
+import UserService from './../../../service/UserService';
+
 export default {
   name: 'register',
   data() {
@@ -40,6 +45,17 @@ export default {
         password2: '',
       },
     };
+  },
+  methods: {
+    doRegister() {
+      UserService.register(this.registerForm.username, this.registerForm.password)
+        .then(() => {
+          this.$message.success('注册成功！');
+        })
+        .catch((error) => {
+          this.$error(error.message);
+        });
+    },
   },
 };
 </script>

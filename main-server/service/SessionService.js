@@ -1,6 +1,5 @@
 const Redis = require('ioredis');
 const BaseService = require('./BaseService');
-const Session = require('./../model/session');
 const User = require('./../model/user');
 const jwt = require('./../util/jwt');
 const config = require('./../config');
@@ -26,6 +25,8 @@ class SessionService extends BaseService {
         } else if (user.password !== password) {
             return this.failure('密码不正确');
         } else {
+            user.userTime.lastLogin = Date.now();
+            await user.save();
             // 登录成功，创建 token
             const token = jwt.sign({ _id: user._id });
             // 实例化 redis ，如果已经实例过就直接用

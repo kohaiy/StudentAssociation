@@ -3,45 +3,42 @@ import axios from 'axios';
 import { Message } from 'element-ui';
 import config from './config';
 import router from './../router';
+import store from './../store';
+import globalConfig from './../config';
 
 const api = axios.create(config);
 
 // http request 拦截器
 api.interceptors.request.use((req) => {
-  // console.log('request');
-  // Message.error('request');
-  if (window.localStorage.ACCESS_TOKEN) {
-    // eslint-disable-next-line no-param-reassign
-    req.headers.Authorization = window.localStorage.ACCESS_TOKEN;
-  } else {
-    // eslint-disable-next-line no-param-reassign
-    req.headers.Authorization = 'Bearer';
-  }
+  // eslint-disable-next-line no-param-reassign
+  req.headers.Authorization = store.state.token;
   return req;
 }, error => Promise.reject(error));
 
 // http response 拦截器
-api.interceptors.response.use((res) => {
-  // Message.error('response');
-  if (res.status === 401) {
+api.interceptors.response.use(res => res.data, (error) => {
+  const res = error.response;
+  if (!res) {
+    Message.error('(500)服务器出了点意外！');
+    throw error;
+  }
+  const isNotAuthPath = globalConfig.notAuthPaths.indexOf(router.currentRoute.path) > -1;
+  if (!isNotAuthPath && res.status === 401) {
     // token 过期
     Message.error('登录已过期！');
-    window.localStorage.removeItem('ACCESS_TOKEN');
+    store.commit('token', null);
+    store.commit('user', null);
     router.replace({
       path: '/login',
       query: {
-        redirect: router.currentRoute.fullPath,
+        redirect: router.currentRoute.path,
       },
     });
+  } else if (Math.floor(res.status / 100) === 5) {
+    Message.error('服务器出了点问题，请稍候再试！');
+  } else {
+    throw error;
   }
-  return res;
-}, () => {
-  Message.error('服务器出了点意外！');
 });
 
-export default {
-  install(Vue) {
-    // eslint-disable-next-line no-param-reassign
-    Vue.prototype.api = api;
-  },
-};
+export default api;
