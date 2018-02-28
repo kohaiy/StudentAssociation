@@ -1,6 +1,15 @@
 const jwt = require('./../util/jwt');
+const RedisUtil = require('./../util/redis');
 
 class BaseService {
+
+    static redis() {
+        this.redisInstance = new RedisUtil();
+        this.redis = () => {
+            return this.redisInstance;
+        };
+        return this.redisInstance;
+    }
 
     /**
      * 验证用户输入

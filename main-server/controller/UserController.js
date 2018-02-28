@@ -13,7 +13,7 @@ class UserController extends BaseController {
         const token = ctx.header.authorization;
         let result = await SessionService.validateToken(token);
         if (result.status === 0)
-            result = await UserService.findById(result.data._id);
+            result = await UserService.findById(result.data._id, ctx.request.query.logs);
         ctx.json(result);
     }
 

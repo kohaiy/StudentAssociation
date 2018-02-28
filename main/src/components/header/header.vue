@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import UserService from './../../service/UserService';
+import UserService from '../../service/UserService';
 
 export default {
   name: 'v-header',

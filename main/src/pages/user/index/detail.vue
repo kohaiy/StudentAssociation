@@ -12,19 +12,50 @@
           <el-radio-button label="-1">保密</el-radio-button>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="注册时间">
-        <span>{{user.userTime.register | formatDate}}</span>
+      <el-form-item label="地区">
+        <el-select v-model="province" placeholder="省份">
+          <el-option v-for="p in provinces" :key="p.pid"
+                     :label="p.name" :value="p.pid"></el-option>
+        </el-select>
+        <el-select v-model="user.city" placeholder="城市">
+          <el-option label="城市" value="city"></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="上次登录">
-        <span>{{user.userTime.lastLogin | formatDate}}</span>
+      <el-form-item label="注册时间">
+        <span>{{user.registerTime | formatDate}}</span>
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+// import UtilService from '../../../service/UtilService';
+// import UserService from '../../../service/UserService';
+import TestService from '../../../service/TestService';
+
 export default {
   name: 'detail',
+  mounted() {
+    TestService.h();
+    // UserService.getFullUser();
+    // UtilService.hello();
+    this.province = this.initProvince();
+  },
+  data() {
+    return {
+      provinces: [],
+      province: null,
+    };
+  },
+  methods: {
+    initProvince() {
+      if (!this.user.city) {
+        return null;
+      }
+      const ps = this.provinces.filter(p => p.pid === this.user.city.pid);
+      return ps && ps[0];
+    },
+  },
   computed: {
     user() {
       return this.$store.state.user;

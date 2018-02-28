@@ -1,3 +1,4 @@
+const http = require('http');
 const Koa = require('koa');
 const app = new Koa();
 const router = require('./router');
@@ -10,7 +11,7 @@ mongoose(config.db.mongodb);
 middleware(app);
 router(app);
 
-app.listen(3000, () => {
+http.createServer(app.callback()).listen(3000, () => {
     console.log('\n'.repeat(1));
     console.log('server is running at http://localhost:3000');
 });

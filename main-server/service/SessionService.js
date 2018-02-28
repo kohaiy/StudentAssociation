@@ -25,14 +25,21 @@ class SessionService extends BaseService {
         } else if (user.password !== password) {
             return this.failure('密码不正确');
         } else {
-            user.userTime.lastLogin = Date.now();
-            await user.save();
+            // user.userTime.lastLogin = Date.now();
+            // await user.save();
             // 登录成功，创建 token
             const token = jwt.sign({ _id: user._id });
-            // 实例化 redis ，如果已经实例过就直接用
-            this.redis = this.redis || new Redis(config.db.redis);
-            // 将 token 保存到 redis 中，并设置过期时间
-            await this.redis.set(`TOKEN:${user._id}`, token, 'EX', config.token.expireTime);
+            // 将 token 保存到 redis 中
+            await this.redis().set(`TOKEN:${user._id}`, token);
+            // 获取登录记录
+            let loginLogs = await this.redis().get(`LOGIN:${user._id}`) || [];
+            // 过滤掉过早的登录记录
+            loginLogs = loginLogs.filter((time) => {
+                return Date.now() - time < config.loginLogsMaxAge * 1000;
+            });
+            // 添加本次登录记录
+            loginLogs.unshift(Date.now());
+            await this.redis().set(`LOGIN:${user._id}`, loginLogs, -1);
             // 返回 _id 和 token
             return this.success({
                 _id: user._id,
@@ -44,11 +51,10 @@ class SessionService extends BaseService {
     static async validateToken(token) {
         try {
             const { _id = '' } = jwt.verify(token);
-            this.redis = this.redis || new Redis(config.db.redis);
-            if (!await this.redis.get(`TOKEN:${_id}`)) {
+            if (!await this.redis().get(`TOKEN:${_id}`)) {
                 return this.failure('令牌验证失败！', 401);
             }
-            await this.redis.set(`TOKEN:${_id}`, token, 'EX', config.token.expireTime);
+            await this.redis().set(`TOKEN:${_id}`, token);
             return this.success({
                 _id,
                 token,

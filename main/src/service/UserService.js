@@ -1,6 +1,8 @@
 import BaseService from './BaseService';
 
-class UserService extends BaseService {
+console.log(`UserServer: ${BaseService}`);
+
+class UserService {
   /**
    * 登录 业务
    * @param username
@@ -55,10 +57,26 @@ class UserService extends BaseService {
    * @returns {Promise<any>}
    */
   static getUser() {
+    return UserService.$userInfo();
+  }
+
+  static getFullUser() {
+    return UserService.$userInfo('/user?logs=1');
+  }
+
+  /**
+   * 用户注销登录 业务
+   */
+  static logout() {
+    this.store.commit('user', null);
+    this.store.commit('token', null);
+  }
+
+  static $userInfo(url = '/user') {
     return new Promise((resolve = () => {
     }, reject = () => {
     }) => {
-      this.api.get('/user')
+      this.api.get(url)
         .then((res) => {
           if (res.status === 0) {
             this.store.commit('lastAuthTime', Date.now());
@@ -74,14 +92,6 @@ class UserService extends BaseService {
           // reject(error.response.data);
         });
     });
-  }
-
-  /**
-   * 用户注销登录 业务
-   */
-  static logout() {
-    this.store.commit('user', null);
-    this.store.commit('token', null);
   }
 }
 

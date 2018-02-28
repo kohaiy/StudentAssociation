@@ -9,7 +9,7 @@ const store = new Vuex.Store({
   state: {
     token: '',
     lastAuthTime: Date.now(),
-    user: {},
+    user: null,
   },
   mutations: {
     token(state, val) {

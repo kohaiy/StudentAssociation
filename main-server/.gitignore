@@ -16,3 +16,4 @@ logs/
 *.ntvs*
 *.njsproj
 *.sln
+/data/
