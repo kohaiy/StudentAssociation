@@ -13,7 +13,7 @@ class UserController extends BaseController {
         const token = ctx.header.authorization;
         let result = await SessionService.validateToken(token);
         if (result.status === 0)
-            result = await UserService.findById(result.data._id, ctx.request.query.logs);
+            result = await UserService.findById(result.data._id, ctx.request.query);
         ctx.json(result);
     }
 
@@ -31,7 +31,25 @@ class UserController extends BaseController {
         ctx.json(await UserService.register(username, password));
     }
 
-    static async put(ctx, next) {
+    /**
+     * 更新用户信息
+     * @param ctx
+     * @returns {Promise<void>}
+     */
+    static async put(ctx) {
+        const token = ctx.header.authorization;
+        let result = await SessionService.validateToken(token);
+        if (result.status === 0) {
+            if (ctx.request.query.pwd) {
+                // 判断是否为更新密码
+                const { oldPassword, newPassword } = ctx.request.body;
+                result = await UserService.updatePassword(result.data._id, oldPassword, newPassword);
+            } else {
+                const { password, ...others } = ctx.request.body;
+                result = await UserService.updateInfo(result.data._id, others);
+            }
+        }
+        ctx.json(result);
     }
 
     static async delete(ctx, next) {

@@ -1,9 +1,10 @@
 import BaseService from './BaseService';
 
-console.log(`TestServer: ${BaseService}`);
+console.log('TestService: ');
+console.log(BaseService);
 
-export default class {
-  static h() {
+export default {
+  h() {
     console.log('sss');
-  }
-}
+  },
+};

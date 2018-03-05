@@ -52,6 +52,7 @@ export default {
   }
   .main-wrapper {
     flex: 1;
+    position: relative;
   }
   .footer-wrapper {
   }

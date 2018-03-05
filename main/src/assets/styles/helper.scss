@@ -74,3 +74,24 @@
 .text-center {
   text-align: center;
 }
+
+.justify {
+  text-align: justify;
+  &:after {
+    content: "";
+    padding-left: 100%;
+    display: inline-block;
+  }
+}
+
+//.el-form-item__label {
+//  text-align: justify;
+//  height: 40px;
+//}
+//
+//.el-form-item__label:after {
+//  content: "";
+//  padding-left: 100%;
+//  display: inline-block;
+//}
+

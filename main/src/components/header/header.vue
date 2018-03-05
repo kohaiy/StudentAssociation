@@ -10,7 +10,7 @@
         <template slot="title">用户名</template>
         <el-menu-item index="/user">个人中心</el-menu-item>
         <el-menu-item index="/message">我的消息</el-menu-item>
-        <el-menu-item @click="logout" index="/xx" class="text-danger">注销</el-menu-item>
+        <el-menu-item @click="logout" :index="$route.path" class="text-danger">注销</el-menu-item>
       </el-submenu>
     </el-menu>
   </header>
@@ -35,6 +35,9 @@ export default {
       this.$message.success('用户退出登录成功！');
       this.$router.replace({
         path: '/login',
+        query: {
+          redirect: this.$route.path,
+        },
       });
     },
   },
