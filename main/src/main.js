@@ -18,6 +18,8 @@ Vue.config.productionTip = false;
 Vue.use(ElementUI);
 
 Vue.prototype.moment = Moment;
+Vue.prototype.$loadingDelayTime = config.loadingDelayTime;
+Vue.prototype.$isClearConsole = config.isClearConsole;
 
 // 重写错误提示，使得支持多条错误信息
 Vue.prototype.$error = function z(err) {

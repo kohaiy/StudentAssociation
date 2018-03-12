@@ -6,4 +6,6 @@ export default {
     '/login',
     '/register',
   ],
+  isClearConsole: false,
+  loadingDelayTime: 400,
 };

@@ -16,29 +16,39 @@ api.interceptors.request.use((req) => {
 }, error => Promise.reject(error));
 
 // http response 拦截器
-api.interceptors.response.use(res => res.data, (error) => {
-  const res = error.response;
-  if (!res) {
-    Message.error('(500)服务器出了点意外！');
-    throw error;
-  }
-  const isNotAuthPath = globalConfig.notAuthPaths.indexOf(router.currentRoute.path) > -1;
-  if (!isNotAuthPath && res.status === 401) {
-    // token 过期
-    Message.error('登录已过期！');
-    store.commit('token', null);
-    store.commit('user', null);
-    router.replace({
-      path: '/login',
-      query: {
-        redirect: router.currentRoute.path,
-      },
-    });
-  } else if (Math.floor(res.status / 100) === 5) {
-    Message.error('服务器出了点问题，请稍候再试！');
-  } else {
-    throw error;
-  }
-});
+api.interceptors.response.use(
+  (() => {
+    if (globalConfig.isClearConsole) {
+      return (res) => {
+        console.clear();
+        return res.data;
+      };
+    }
+    return res => res.data;
+  })(), (error) => {
+    const res = error.response;
+    if (!res) {
+      Message.error('(500)服务器出了点意外！');
+      throw error;
+    }
+    const isNotAuthPath = globalConfig.notAuthPaths.indexOf(router.currentRoute.path) > -1;
+    if (!isNotAuthPath && res.status === 401) {
+      // token 过期
+      Message.error('登录已过期！');
+      store.commit('token', null);
+      store.commit('user', null);
+      router.replace({
+        path: '/login',
+        query: {
+          redirect: router.currentRoute.path,
+        },
+      });
+    } else if (Math.floor(res.status / 100) === 5) {
+      Message.error(res.data.message || '服务器出了点问题，请稍候再试！');
+    }
+    throw res;
+  },
+)
+;
 
 export default api;

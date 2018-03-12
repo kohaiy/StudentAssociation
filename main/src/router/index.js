@@ -11,6 +11,10 @@ import UserSafePage from '../pages/user/index/safe';
 import MessageIndexPage from '../pages/message/index';
 import MessageWhisperPage from '../pages/message/whisper';
 import MessageSystemPage from '../pages/message/system';
+// association
+import AssociationIndexPage from '../pages/association/index';
+import AssociationDetailPage from '../pages/association/detail';
+import AssociationMemberPage from '../pages/association/member';
 
 Vue.use(Router);
 
@@ -63,6 +67,20 @@ export default new Router({
         {
           path: 'whisper',
           component: MessageWhisperPage,
+        },
+      ],
+    },
+    {
+      path: '/association',
+      component: AssociationIndexPage,
+      children: [
+        {
+          path: '/',
+          component: AssociationDetailPage,
+        },
+        {
+          path: 'member',
+          component: AssociationMemberPage,
         },
       ],
     },

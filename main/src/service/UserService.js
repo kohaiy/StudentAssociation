@@ -109,6 +109,11 @@ const UserService = {
     });
   },
 
+  /**
+   * 更新用户信息
+   * @param info
+   * @returns {Promise<any>}
+   */
   updateInfo(info = {}) {
     return new Promise((resolve = () => {
     }, reject = () => {
@@ -118,15 +123,20 @@ const UserService = {
           if (res.status === 0) {
             resolve(res);
           } else {
-            reject(res);
+            reject(res.message);
           }
         })
         .catch((error) => {
-          reject(error.response.data);
+          reject(error.data.message);
         });
     });
   },
 
+  /**
+   * 获取用户详细信息
+   * @param params
+   * @returns {Promise<any>}
+   */
   getUserInfo(params = '') {
     return new Promise((resolve = () => {
     }, reject = () => {
@@ -136,11 +146,11 @@ const UserService = {
           if (res.status === 0) {
             resolve(res);
           } else {
-            reject(res);
+            reject(res.message);
           }
         })
         .catch((error) => {
-          reject(error.response.data);
+          reject(error.data.message);
         });
     });
   },

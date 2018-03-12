@@ -4,7 +4,7 @@ const User = require('./../model/user');
 class UserService extends BaseService {
 
     /**
-     *
+     * 获取用户信息
      * @param _id
      * @param opt
      * @returns {Promise<*>}
@@ -13,19 +13,18 @@ class UserService extends BaseService {
         if (!_id || typeof _id !== 'string' || _id.length !== 24) {
             return this.failure(' _id 不合法', 401);
         }
-        let user = User.findById(_id);
-        for (let key in opt){
-            console.log(key);
-            if (opt[key]){
+        let user = User.findById(_id, '-password');
+        for (let key in opt) {
+            if (opt[key]) {
                 user = user.populate(key);
             }
         }
         user = await user;
         // 过滤掉用户密码和相关不必要信息
-        let { __v, password, ...filteredInfo } = user._doc;
+        // let { __v, password, ...filteredInfo } = user._doc;
         // 判断是否显示登录日志
         if (opt.logs) {
-            filteredInfo.loginLogs = await this.redis().get(`LOGIN:${_id}`);
+            user.loginLogs = await this.redis().get(`LOGIN:${_id}`);
         }
         return this.success(filteredInfo);
     }
@@ -58,6 +57,14 @@ class UserService extends BaseService {
         return this.success(user, 201);
     }
 
+    /**
+     *
+     * 更新用户密码
+     * @param _id
+     * @param oldPassword
+     * @param newPassword
+     * @returns {Promise<*>}
+     */
     static async updatePassword(_id = '', oldPassword = '', newPassword = '') {
         let user = await User.findById(_id);
         console.log(user);
@@ -78,10 +85,19 @@ class UserService extends BaseService {
         }
     }
 
+    /**
+     * 更新用户信息
+     * @param _id
+     * @param info
+     * @returns {Promise<*>}
+     */
     static async updateInfo(_id = '', info = {}) {
         let user = await User.findById(_id);
         if (user) {
             for (let key in info) {
+                if (key === 'school' && user.association) {
+                    return this.failure('当前不能修改学校，请先退出同乡会');
+                }
                 user[key] = info[key];
             }
             const error = this.validate(user);

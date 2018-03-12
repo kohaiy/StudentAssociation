@@ -1,77 +1,83 @@
 <template>
-  <div class="detail">
-    <el-form label-width="80px">
-      <el-form-item label="用户名">
-        <el-input v-model="user.username" :disabled="true"></el-input>
-      </el-form-item>
-      <el-form-item label="昵称">
-        <el-input @blur="changeNickname"
-                  @keyup.enter.native="changeNickname"
-                  v-model="user.nickname"></el-input>
-      </el-form-item>
-      <el-form-item label="姓名">
-        <el-input @blur="changeRealName"
-                  @keyup.enter.native="changeRealName"
-                  v-model="user.realName"></el-input>
-      </el-form-item>
-      <el-form-item label="性别">
-        <el-radio-group @change="changeGender" v-model.number="user.gender">
-          <el-radio-button label="0">男</el-radio-button>
-          <el-radio-button label="1">女</el-radio-button>
-          <el-radio-button label="-1">保密</el-radio-button>
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="地区">
-        <el-select v-model="province" placeholder="省份">
-          <el-option v-for="p in provinces" :key="p._id"
-                     :label="p.name" :value="p._id"></el-option>
-        </el-select>
-        <el-select @change="changeCity" v-model="city" placeholder="城市">
-          <el-option v-for="c in cities" :key="c._id"
-                     :label="c.name" :value="c._id"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="学校">
-        <el-button @click="isShowSchoolDialog = true">
-          {{user.school && user.school.name || '选择学校'}}
-        </el-button>
-      </el-form-item>
-      <el-form-item label="同乡会">
-        <el-button>前往我的同乡会</el-button>
-      </el-form-item>
-      <el-form-item label="注册时间">
-        <span>{{user.registerTime | formatDate}}</span>
-      </el-form-item>
-    </el-form>
-    <!--选择学校对话框-->
-    <el-dialog
-      title="选择学校"
-      :visible.sync="isShowSchoolDialog">
-      <el-form>
-        <el-form-item label="省份">
-          <el-select v-model="sProvince" placeholder="省份">
+  <div class="detail" v-loading.fullscreen.lock="!isLoad">
+    <div v-show="isLoad">
+      <el-form label-width="80px">
+        <el-form-item label="用户名">
+          <el-input v-model="user.username" :disabled="true"></el-input>
+        </el-form-item>
+        <el-form-item label="昵称">
+          <el-input @blur="changeNickname"
+                    @keyup.enter.native="changeNickname"
+                    v-model="user.nickname"></el-input>
+        </el-form-item>
+        <el-form-item label="姓名">
+          <el-input @blur="changeRealName"
+                    @keyup.enter.native="changeRealName"
+                    v-model="user.realName"></el-input>
+        </el-form-item>
+        <el-form-item label="性别">
+          <el-radio-group @change="changeGender" v-model.number="user.gender">
+            <el-radio-button label="0">男</el-radio-button>
+            <el-radio-button label="1">女</el-radio-button>
+            <el-radio-button label="-1">保密</el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="地区">
+          <el-select v-model="province" placeholder="省份">
             <el-option v-for="p in provinces" :key="p._id"
                        :label="p.name" :value="p._id"></el-option>
           </el-select>
-        </el-form-item>
-        <el-form-item label="城市">
-          <el-select v-model="sCity" placeholder="城市">
-            <el-option v-for="c in sCities" :key="c._id"
+          <el-select @change="changeCity" v-model="city" placeholder="城市">
+            <el-option v-for="c in cities" :key="c._id"
                        :label="c.name" :value="c._id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="学校">
-          <el-select v-model="sSchool" placeholder="城市">
-            <el-option v-for="s in sSchools" :key="s._id"
-                       :label="s.name" :value="s._id"></el-option>
-          </el-select>
+          <el-button @click="isShowSchoolDialog = true">
+            {{user.school && user.school.name || '选择学校'}}
+          </el-button>
+        </el-form-item>
+        <el-form-item label="同乡会">
+          <router-link to="/association">
+            <el-button>
+              {{user.association && user.association.name || '加入同乡会'}}
+            </el-button>
+          </router-link>
+        </el-form-item>
+        <el-form-item label="注册时间">
+          <span>{{user.registerTime | formatDate}}</span>
         </el-form-item>
       </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="isShowSchoolDialog = false">取 消</el-button>
-        <el-button type="primary" @click="changeSchool">确 定</el-button>
-      </div>
-    </el-dialog>
+      <!--选择学校对话框-->
+      <el-dialog
+        title="选择学校"
+        :visible.sync="isShowSchoolDialog">
+        <el-form>
+          <el-form-item label="省份">
+            <el-select v-model="sProvince" placeholder="省份">
+              <el-option v-for="p in provinces" :key="p._id"
+                         :label="p.name" :value="p._id"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="城市">
+            <el-select v-model="sCity" placeholder="城市">
+              <el-option v-for="c in sCities" :key="c._id"
+                         :label="c.name" :value="c._id"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="学校">
+            <el-select v-model="sSchool" placeholder="城市">
+              <el-option v-for="s in sSchools" :key="s._id"
+                         :label="s.name" :value="s._id"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="isShowSchoolDialog = false">取 消</el-button>
+          <el-button type="primary" @click="changeSchool">确 定</el-button>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -83,18 +89,21 @@ import UserService from '../../../service/UserService';
 export default {
   name: 'detail',
   mounted() {
-    UserService.getUserInfo('city=1&school=1').then((res) => {
+    UserService.getUserInfo('city=1&school=1&association=1').then((res) => {
       this.user = res.data;
       return UtilService.getProvinces();
     }).then((res) => {
       this.provinces = res.data;
       this.province = this.initProvince()._id;
       this.city = this.user.city && this.user.city._id;
-      console.log(this.city);
+      setTimeout(() => {
+        this.isLoad = true;
+      }, this.$loadingDelayTime);
     });
   },
   data() {
     return {
+      isLoad: false,
       user: {
         username: '',
         nickname: '',
@@ -157,7 +166,6 @@ export default {
     province(pid) {
       UtilService.getCities(pid).then((res) => {
         this.cities = res.data;
-        console.log(this.cities);
       });
     },
     sProvince(pid) {

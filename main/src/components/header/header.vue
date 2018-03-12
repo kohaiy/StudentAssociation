@@ -9,6 +9,7 @@
       <el-submenu index="/xxx" class="pull-right">
         <template slot="title">用户名</template>
         <el-menu-item index="/user">个人中心</el-menu-item>
+        <el-menu-item index="/association">我的同乡会</el-menu-item>
         <el-menu-item index="/message">我的消息</el-menu-item>
         <el-menu-item @click="logout" :index="$route.path" class="text-danger">注销</el-menu-item>
       </el-submenu>

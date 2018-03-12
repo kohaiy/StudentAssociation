@@ -20,7 +20,7 @@
                       type="password" v-model="registerForm.password2"></el-input>
           </el-form-item>
           <el-form-item class="clearfix">
-            还没有账号？
+            已有账号？
             <router-link to="/login">
               <el-button type="text" to="/login">登录</el-button>
             </router-link>
