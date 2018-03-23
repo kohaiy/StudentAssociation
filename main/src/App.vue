@@ -48,6 +48,7 @@ export default {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: rgba(164, 192, 230, .5);
   .header-wrapper {
   }
   .main-wrapper {

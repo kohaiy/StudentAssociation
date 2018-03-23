@@ -3,6 +3,7 @@ const IndexController = require('./controller/IndexController');
 const SessionController = require('./controller/SessionController');
 const UserController = require('./controller/UserController');
 const AssociationController = require('./controller/AssociationController');
+const MessageController = require('./controller/MessageController');
 const UtilController = require('./controller/UtilController');
 
 module.exports = (app) => {
@@ -14,6 +15,7 @@ module.exports = (app) => {
         .put('/session', SessionController.put)         // 更新会话信息
         .delete('/session', SessionController.delete)   // 注销登录
         // User
+        .get('/user/:id', UserController.getPublicUser)
         .get('/users', UserController.getAll)           // 获取所有用户
         .get('/user', UserController.get)               // 获取用户信息
         .post('/user', UserController.register)         // 注册
@@ -21,12 +23,22 @@ module.exports = (app) => {
         .delete('/user', UserController.delete)         // 注销用户
 
         .get('/associations/:school', AssociationController.getBySchool)    // 通过学校获取同乡会们
-        .get('/association/:id', AssociationController.getById)             // 通过 id 获取同乡会信息
+        .get('/association', AssociationController.getById)                 // 通过 id 获取同乡会信息
         .post('/association', AssociationController.createAssociation)      // 创建同乡会
+        .get('/association/members', AssociationController.getMembers)      // 获取同乡会成员
+        .put('/association', AssociationController.update)                  // 更新
 
-        .get('/provinces', UtilController.getProvinces) // 获取所有省份
-        .get('/cities', UtilController.getCities)       // 获取城市
-        .get('/schools', UtilController.getSchools)       // 获取学校
+        .get('/messages', MessageController.get)            // 获取消息
+        .get('/message/list', MessageController.getMemberList)
+        // .get('/message/:id', MessageController.getMessagesBy)
+        .post('/message', MessageController.create)         // 创建消息
+        // .put('/message', MessageController.read)            // 设置消息为已读
+        // .delete('/message/:id', MessageController.remove)       // 删除一条消息
+        // .delete('/messages', MessageController.removeAll)   // 删除全部消息
+
+        .get('/provinces', UtilController.getProvinces)     // 获取所有省份
+        .get('/cities', UtilController.getCities)           // 获取城市
+        .get('/schools', UtilController.getSchools)         // 获取学校
     ;
 
     app.use(router.routes())

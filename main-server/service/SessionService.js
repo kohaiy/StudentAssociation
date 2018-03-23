@@ -1,5 +1,6 @@
 const Redis = require('ioredis');
 const BaseService = require('./BaseService');
+const MessageService = require('./MessageService');
 const User = require('./../model/user');
 const jwt = require('./../util/jwt');
 const config = require('./../config');
@@ -40,6 +41,7 @@ class SessionService extends BaseService {
             // 添加本次登录记录
             loginLogs.unshift(Date.now());
             await this.redis().set(`LOGIN:${user._id}`, loginLogs, -1);
+            await MessageService.createSystemMessage(user, '登录成功', '系统消息');
             // 返回 _id 和 token
             return this.success({
                 _id: user._id,

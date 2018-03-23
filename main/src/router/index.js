@@ -23,17 +23,18 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'HelloWorld',
+      // name: 'HelloWorld',
+      redirect: '/user',
       component: HelloWorld,
     },
     {
       path: '/login',
-      name: 'login',
+      name: '用户登录中心',
       component: UserLoginPage,
     },
     {
       path: '/register',
-      name: 'register',
+      name: '用户注册中心',
       component: UserRegisterPage,
     },
     {
@@ -42,12 +43,12 @@ export default new Router({
       children: [
         {
           path: '/',
-          name: 'detail',
+          name: '我的信息',
           component: UserDetailPage,
         },
         {
           path: 'safe',
-          name: 'safe',
+          name: '安全中心',
           component: UserSafePage,
         },
       ],
@@ -62,10 +63,17 @@ export default new Router({
         },
         {
           path: 'system',
+          name: '系统通知',
           component: MessageSystemPage,
         },
         {
           path: 'whisper',
+          name: '我的消息',
+          component: MessageWhisperPage,
+        },
+        {
+          path: 'whisper/:id',
+          name: '聊天讯息',
           component: MessageWhisperPage,
         },
       ],
@@ -76,10 +84,12 @@ export default new Router({
       children: [
         {
           path: '/',
+          name: '同乡会基本信息',
           component: AssociationDetailPage,
         },
         {
           path: 'member',
+          name: '同乡会成员信息',
           component: AssociationMemberPage,
         },
       ],

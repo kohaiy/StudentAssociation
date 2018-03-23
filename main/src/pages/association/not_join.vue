@@ -21,6 +21,7 @@
               :value="as._id">
             </el-option>
           </el-select>
+          <el-button @click="joinAssociation" type="primary">立即加入</el-button>
         </li>
         <li>
           <p>创建一个同乡会</p>
@@ -84,6 +85,7 @@
 <script>
 import AssociationService from '../../service/AssociationService';
 import UtilService from '../../service/UtilService';
+import UserService from '../../service/UserService';
 
 export default {
   name: 'not_join',
@@ -170,6 +172,17 @@ export default {
           });
       } else {
         this.createStep = this.createStep + 1;
+      }
+    },
+    joinAssociation() {
+      if (this.association) {
+        UserService.joinAssociation(this.association)
+          .then(() => {
+            this.$message.success('加入同乡会成功');
+            this.$router.go(0);
+          });
+      } else {
+        this.$message.error('请先选择同乡会');
       }
     },
   },

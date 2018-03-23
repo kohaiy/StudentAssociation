@@ -45,6 +45,8 @@ Vue.prototype.$error = function z(err) {
  * 验证通过则进入后续操作，失败则会跳转到登录界面
  */
 router.beforeEach((to, from, next) => {
+  // console.log(window.document.title);
+  // window.document.title = `to.path: ${to.path}, from: ${from.path}`;
   console.log(`to.path: ${to.path}, from: ${from.path}`);
   if (config.notAuthPaths.indexOf(to.path) > -1
     || (store.state.user && Date.now() - store.state.lastAuthTime < config.expireTime * 1000)) {
@@ -59,7 +61,12 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+router.afterEach(((to) => {
+  window.document.title = `${to.name} - 同乡会系统`;
+}));
+
 Vue.filter('formatDate', (date = Date.now(), format = 'YYYY-MM-DD HH:mm:ss') => Moment(date).format(format));
+Vue.filter('formatGender', gender => ['保密', '男', '女'][gender + 1]);
 
 /* eslint-disable no-new */
 new Vue({

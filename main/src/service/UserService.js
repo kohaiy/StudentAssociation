@@ -77,6 +77,24 @@ const UserService = {
     });
   },
 
+  getUserPublic(_id) {
+    return new Promise((resolve = () => {
+    }, reject = () => {
+    }) => {
+      api.get(`/user/${_id}`)
+        .then((res) => {
+          if (res.status === 0) {
+            resolve(res);
+          } else {
+            reject(res);
+          }
+        })
+        .catch((error) => {
+          reject(error.data.message);
+        });
+    });
+  },
+
   /**
    * 用户注销登录 业务
    */
@@ -93,9 +111,24 @@ const UserService = {
    */
   updatePassword(oldPassword, newPassword) {
     return new Promise((resolve = () => {
-    }, reject = () => {
     }) => {
       api.put('/user?pwd=1', { oldPassword, newPassword })
+        .then((res) => {
+          resolve(res);
+        });
+    });
+  },
+
+  /**
+   * 加入同乡会
+   * @param aid
+   * @returns {Promise<any>}
+   */
+  joinAssociation(aid) {
+    return new Promise((resolve = () => {
+    }, reject = () => {
+    }) => {
+      api.put('/user?association=1', { aid })
         .then((res) => {
           if (res.status === 0) {
             resolve(res);
@@ -104,7 +137,25 @@ const UserService = {
           }
         })
         .catch((error) => {
-          reject(error.response.data);
+          reject(error.data.message);
+        });
+    });
+  },
+
+  quitAssociation() {
+    return new Promise((resolve = () => {
+    }, reject = () => {
+    }) => {
+      api.put('/user?association=quit')
+        .then((res) => {
+          if (res.status === 0) {
+            resolve(res);
+          } else {
+            reject(res);
+          }
+        })
+        .catch((error) => {
+          reject(error.data.message);
         });
     });
   },

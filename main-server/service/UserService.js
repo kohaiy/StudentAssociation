@@ -1,5 +1,6 @@
 const BaseService = require('./BaseService');
 const User = require('./../model/user');
+const Association = require('../model/association');
 
 class UserService extends BaseService {
 
@@ -20,13 +21,16 @@ class UserService extends BaseService {
             }
         }
         user = await user;
-        // 过滤掉用户密码和相关不必要信息
-        // let { __v, password, ...filteredInfo } = user._doc;
         // 判断是否显示登录日志
         if (opt.logs) {
-            user.loginLogs = await this.redis().get(`LOGIN:${_id}`);
+            user._doc.loginLogs = await this.redis().get(`LOGIN:${_id}`);
         }
-        return this.success(filteredInfo);
+        return this.success(user);
+    }
+
+    static async findPublic(_id) {
+        let user = await User.findById(_id, 'username gender');
+        return this.success(user);
     }
 
     static async findAll() {
@@ -92,13 +96,14 @@ class UserService extends BaseService {
      * @returns {Promise<*>}
      */
     static async updateInfo(_id = '', info = {}) {
+        const { password, association, ...filtered } = info;
         let user = await User.findById(_id);
         if (user) {
-            for (let key in info) {
+            for (let key in filtered) {
                 if (key === 'school' && user.association) {
                     return this.failure('当前不能修改学校，请先退出同乡会');
                 }
-                user[key] = info[key];
+                user[key] = filtered[key];
             }
             const error = this.validate(user);
             if (error) {
@@ -109,6 +114,53 @@ class UserService extends BaseService {
         } else {
             return this.failure();
         }
+    }
+
+    /**
+     * 加入同乡会
+     * @param userId
+     * @param associationId
+     * @returns {Promise<*>}
+     */
+    static async joinAssociation(userId, associationId) {
+        const user = await User.findById(userId);
+        if (user && user.school) {
+            const association = await Association.findById(associationId);
+            if (user.school.toString() !== association.school.toString()) {
+                return this.failure('该同乡会不属于您选择的学校');
+            } else {
+                user.association = association;
+                await user.save();
+                return this.success();
+            }
+        } else {
+            return this.failure('请先选择学校');
+        }
+    }
+
+    /**
+     * 退出同乡会
+     * @param userId
+     * @returns {Promise<*>}
+     */
+    static async quitAssociation(userId) {
+        const user = await User.findById(userId);
+        if (user && user.association) {
+            const association = await Association.findById(user.association);
+            if (association.chairman.toString() === userId) {
+                // 会长不能退出同乡会
+                return this.failure('会长不能退出同乡会');
+            }
+            let index = association.managers.indexOf(userId);
+            if (index > -1) {
+                association.managers.splice(index, 1);
+                await association.save();
+            }
+            user.association = null;
+            await user.save();
+            return this.success();
+        }
+        return this.failure('未知错误');
     }
 }
 

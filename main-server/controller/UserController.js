@@ -17,6 +17,12 @@ class UserController extends BaseController {
         ctx.json(result);
     }
 
+    static async getPublicUser(ctx) {
+        let result = await UserService.findPublic(ctx.params.id);
+        console.log(result);
+        ctx.json(result);
+    }
+
     static async getAll(ctx) {
         ctx.json(await UserService.findAll());
     }
@@ -44,6 +50,17 @@ class UserController extends BaseController {
                 // 判断是否为更新密码
                 const { oldPassword, newPassword } = ctx.request.body;
                 result = await UserService.updatePassword(result.data._id, oldPassword, newPassword);
+            } else if (ctx.request.query.association) {
+                // 判断是否为更新同乡会操作
+                if (ctx.request.query.association === 'quit') {
+                    // 离开同乡会
+                    result = await UserService.quitAssociation(result.data._id);
+                } else if (ctx.request.query.association === 'kick') {
+
+                } else {
+                    // 加入同乡会
+                    result = await UserService.joinAssociation(result.data._id, ctx.request.body.aid);
+                }
             } else {
                 const { password, ...others } = ctx.request.body;
                 result = await UserService.updateInfo(result.data._id, others);

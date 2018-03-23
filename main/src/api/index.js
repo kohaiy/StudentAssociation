@@ -24,7 +24,12 @@ api.interceptors.response.use(
         return res.data;
       };
     }
-    return res => res.data;
+    return (res) => {
+      if (res.data.status !== 0) {
+        Message.error(res.data.message);
+      }
+      return res.data;
+    };
   })(), (error) => {
     const res = error.response;
     if (!res) {
@@ -32,7 +37,9 @@ api.interceptors.response.use(
       throw error;
     }
     const isNotAuthPath = globalConfig.notAuthPaths.indexOf(router.currentRoute.path) > -1;
-    if (!isNotAuthPath && res.status === 401) {
+    if (isNotAuthPath && res.status === 401) {
+      //  xxx
+    } else if (!isNotAuthPath && res.status === 401) {
       // token 过期
       Message.error('登录已过期！');
       store.commit('token', null);
@@ -45,6 +52,8 @@ api.interceptors.response.use(
       });
     } else if (Math.floor(res.status / 100) === 5) {
       Message.error(res.data.message || '服务器出了点问题，请稍候再试！');
+    } else {
+      Message.error(res.data.message);
     }
     throw res;
   },

@@ -25,11 +25,11 @@ const AssociationService = {
     });
   },
 
-  getById(id, opts) {
+  getById(opts) {
     return new Promise((resolve = () => {
     }, reject = () => {
     }) => {
-      api.get(`/association/${id}?${opts}`)
+      api.get(`/association?${opts}`)
         .then((res) => {
           if (res.status === 0) {
             resolve(res);
@@ -56,7 +56,43 @@ const AssociationService = {
           }
         })
         .catch((error) => {
-          if (error.response) reject(error.response.data);
+          reject(error.data.message);
+        });
+    });
+  },
+
+  getMembers() {
+    return new Promise((resolve = () => {
+    }, reject = () => {
+    }) => {
+      api.get('/association/members')
+        .then((res) => {
+          if (res.status === 0) {
+            resolve(res);
+          } else {
+            reject(res);
+          }
+        })
+        .catch((error) => {
+          reject(error.data.message);
+        });
+    });
+  },
+
+  doAction(action, id) {
+    return new Promise((resolve = () => {
+    }, reject = () => {
+    }) => {
+      api.put(`/association?action=${action}`, { id })
+        .then((res) => {
+          if (res.status === 0) {
+            resolve(res);
+          } else {
+            reject(res);
+          }
+        })
+        .catch((error) => {
+          reject(error.data.message);
         });
     });
   },

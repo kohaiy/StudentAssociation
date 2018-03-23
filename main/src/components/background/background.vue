@@ -10,7 +10,7 @@ export default {
   mounted() {
     document.addEventListener('touchmove', (e) => {
       e.preventDefault();
-    });
+    }, { passive: false });
     let c = document.getElementsByTagName('canvas')[0];
     let x = c.getContext('2d');
     let pr = window.devicePixelRatio || 1;

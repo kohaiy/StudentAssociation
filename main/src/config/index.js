@@ -7,5 +7,5 @@ export default {
     '/register',
   ],
   isClearConsole: false,
-  loadingDelayTime: 400,
+  loadingDelayTime: 200,
 };

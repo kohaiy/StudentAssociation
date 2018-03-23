@@ -1,21 +1,30 @@
 <template>
-  <div class="safe">
-    <h1>安全中心</h1>
-    <el-form label-width="80px">
-      <el-form-item label="旧密码">
-        <el-input v-model="oldPassword" type="password"></el-input>
-      </el-form-item>
-      <el-form-item label="新密码">
-        <el-input v-model="newPassword" type="password"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button @click="updatePassword" type="primary">更新密码</el-button>
-      </el-form-item>
-    </el-form>
-    <h2>登录日志</h2>
-    <ul>
-      <li v-for="log in logs" :key="log">{{log | formatDate}}</li>
-    </ul>
+  <div class="safe common-container">
+    <div class="title">
+      <span>用户安全中心</span>
+    </div>
+    <div class="change-password">
+      <div class="title">修改密码</div>
+      <el-form inline>
+        <div class="label">旧密码：</div>
+        <el-form-item class="input">
+          <el-input v-model="oldPassword" type="password"></el-input>
+        </el-form-item>
+        <div class="label">新密码：</div>
+        <el-form-item class="input">
+          <el-input v-model="newPassword" type="password"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button @click="updatePassword" type="primary">更新密码</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <div class="login-logs">
+      <div class="title">登录日志</div>
+      <ul>
+        <li v-for="log in logs" :key="log">{{log | formatDate}}</li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -47,14 +56,39 @@ export default {
             redirect: this.$router.currentRoute.path,
           },
         });
-      }).catch((error) => {
-        this.$message.error(error.message);
       });
     },
   },
 };
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+.safe {
+  color: #666666;
+  .change-password {
+    padding: 20px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px 0 rgba(121, 146, 185, .54);
+    border-radius: 4px;
+    background-color: #fff;
+    .title {
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #eeeeee;
+      font-size: 14px;
+    }
+  }
+  .login-logs {
+    padding: 20px;
+    box-shadow: 0 2px 4px 0 rgba(121, 146, 185, .54);
+    border-radius: 4px;
+    background-color: #fff;
+    .title {
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #eeeeee;
+      font-size: 14px;
+    }
+  }
+}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="detail" v-loading.fullscreen.lock="!isLoad">
+  <div class="detail common-container" v-loading.fullscreen.lock="!isLoad">
     <div v-show="isLoad">
       <el-form label-width="80px">
         <el-form-item label="用户名">
