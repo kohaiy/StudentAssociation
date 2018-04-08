@@ -59,6 +59,24 @@ const MessageService = {
         });
     });
   },
+
+  massMessage(content) {
+    return new Promise((resolve = () => {
+    }, reject = () => {
+    }) => {
+      api.post('/messages', { content })
+        .then((res) => {
+          if (res.status === 0) {
+            resolve(res);
+          } else {
+            reject(res);
+          }
+        })
+        .catch((error) => {
+          reject(error.data.message);
+        });
+    });
+  },
 };
 
 export default MessageService;

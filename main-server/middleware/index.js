@@ -1,6 +1,8 @@
+const path = require('path');
 const bodyParser = require('koa-bodyparser');
 const session = require('koa-session2');
 const cors = require('koa2-cors');
+const staticFiles = require('koa-static');
 
 const Store = require('./../util/redis-store');
 const log = require('./log');
@@ -35,6 +37,9 @@ module.exports = (app) => {
 
     // 配置日志输出
     app.use(log());
+
+    // 指定 public目录为静态资源目录，用来存放 js css images 等
+    app.use(staticFiles(path.resolve(__dirname, "../public")));
 
     // 配置 json 数据返回
     app.use(json());

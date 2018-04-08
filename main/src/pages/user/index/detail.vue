@@ -1,16 +1,30 @@
 <template>
   <div class="detail common-container" v-loading.fullscreen.lock="!isLoad">
-    <div v-show="isLoad">
+    <div class="detail-list" v-show="isLoad">
       <el-form label-width="80px">
-        <el-form-item label="用户名">
+        <el-form-item label="头像">
+          <el-upload
+            class="avatar-uploader"
+            action="http://localhost:3000/upload"
+            :show-file-list="false"
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload">
+            <div v-if="user.avatar"
+                 :style="'background-image:url(' + user.avatar + ')'"
+                 class="avatar"></div>
+            <i v-else class="el-icon-plus
+             avatar-uploader-icon"></i>
+          </el-upload>
+        </el-form-item>
+        <el-form-item class="short-item" label="用户名">
           <el-input v-model="user.username" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item label="昵称">
+        <el-form-item class="short-item" label="昵称">
           <el-input @blur="changeNickname"
                     @keyup.enter.native="changeNickname"
                     v-model="user.nickname"></el-input>
         </el-form-item>
-        <el-form-item label="姓名">
+        <el-form-item class="short-item" label="姓名">
           <el-input @blur="changeRealName"
                     @keyup.enter.native="changeRealName"
                     v-model="user.realName"></el-input>
@@ -109,6 +123,7 @@ export default {
         nickname: '',
         realName: '',
         gender: -1,
+        avatar: '',
       },
       provinces: [],
       cities: [],
@@ -160,6 +175,30 @@ export default {
         })
         .catch(error => this.$message.error(error));
     },
+    handleAvatarSuccess(res) {
+      if (res.status === 0) {
+        this.user.avatar = res.data;
+        this.$message.success('上传成功');
+        UserService.updateInfo({ avatar: this.user.avatar })
+          .then(() => this.$message.success('更新成功！'))
+          .catch(error => this.$message.error(error));
+      } else {
+        this.$message.error('图片上传失败，请重试');
+      }
+    },
+    beforeAvatarUpload(file) {
+      const allowTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/x-icon'];
+      const isAllowType = allowTypes.indexOf(file.type) > -1;
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isAllowType) {
+        this.$message.error('上传头像图片只能是 JPG/PNG/GIF/ICO 格式!');
+      }
+      if (!isLt2M) {
+        this.$message.error('上传头像图片大小不能超过 2MB!');
+      }
+      return isAllowType && isLt2M;
+    },
   },
   computed: {},
   watch: {
@@ -184,13 +223,47 @@ export default {
         this.sSchools = res.data;
         this.sSchool = null;
       });
-    },
-  },
-};
+    }
+    ,
+  }
+  ,
+}
+;
 </script>
 
 <style lang="scss" scoped>
 .detail {
-  padding: 20px;
+  min-width: 300px;
+  overflow: auto;
+  .detail-list {
+    padding: 40px 20px 20px;
+    box-shadow: 0 2px 4px 0 rgba(121, 146, 185, .54);
+    border-radius: 4px;
+    background-color: #fff;
+    .short-item {
+      max-width: 250px;
+    }
+  }
+  .avatar-uploader {
+    width: 100px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    border: 1px dashed #8c939d;
+    border-radius: 6px;
+    overflow: hidden;
+    font-size: 28px;
+    color: #8c939d;
+    cursor: pointer;
+    &:hover {
+      border-color: #409EFF;
+    }
+    .avatar {
+      height: 100px;
+      width: 100px;
+      background: #8c939d center;
+      background-size: cover;
+    }
+  }
 }
 </style>

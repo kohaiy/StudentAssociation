@@ -151,7 +151,7 @@ class AssociationService extends BaseService {
         console.log(managerId);
         console.log(memberId);
         const manager = await User.findById(managerId);
-        const member = await  User.findById(memberId);
+        const member = await User.findById(memberId);
         const association = await Association.findById(manager.association);
         // 为会长 或 manager 是该同乡会管理员 并且 member 与 manager 同一同乡会
         if (association.chairman.toString() === managerId
@@ -170,18 +170,6 @@ class AssociationService extends BaseService {
             return this.failure('权限不足');
         }
     }
-
-    static getIndex(arr = [], item = '') {
-        if (arr instanceof Array) {
-            for (let i in arr) {
-                if (arr[i].toString() === item.toString()) {
-                    return i;
-                }
-            }
-        }
-        return -1;
-    }
-
 }
 
 module.exports = AssociationService;

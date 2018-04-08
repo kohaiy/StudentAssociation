@@ -15,6 +15,7 @@ import MessageSystemPage from '../pages/message/system';
 import AssociationIndexPage from '../pages/association/index';
 import AssociationDetailPage from '../pages/association/detail';
 import AssociationMemberPage from '../pages/association/member';
+import AssociationMassPage from '../pages/association/mass';
 
 Vue.use(Router);
 
@@ -84,13 +85,18 @@ export default new Router({
       children: [
         {
           path: '/',
-          name: '同乡会基本信息',
+          name: '我的同乡会',
           component: AssociationDetailPage,
         },
         {
           path: 'member',
           name: '同乡会成员信息',
           component: AssociationMemberPage,
+        },
+        {
+          path: 'mass',
+          name: '群发消息',
+          component: AssociationMassPage,
         },
       ],
     },

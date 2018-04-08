@@ -54,6 +54,15 @@ const associationSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
     }],
+    // 是否公开同乡会
+    open: {
+        type: Boolean,
+        default: false,
+    },
+    // 常用地址
+    addresses: {
+        type: [String],
+    },
 });
 
 module.exports = mongoose.model('Association', associationSchema);

@@ -9,12 +9,15 @@
     "jsonwebtoken": "^8.1.1",
     "koa": "^2.4.1",
     "koa-bodyparser": "^4.2.0",
+    "koa-multer": "^1.0.2",
     "koa-router": "^7.3.0",
     "koa-session2": "^2.2.5",
+    "koa-static": "^4.0.2",
     "koa2-cors": "^2.0.5",
     "log4js": "^2.4.1",
     "mongoose": "^5.0.3",
     "nodemailer": "^4.4.2",
-    "nodemon": "^1.14.7"
+    "nodemon": "^1.14.7",
+    "qiniu": "^7.1.3"
   }
 }

@@ -1,13 +1,13 @@
 <template>
-  <div class="not_join">
-    <h1>未加入同乡会</h1>
+  <div class="not-join">
+    <div class="title">未加入同乡会</div>
     <template v-if="!user.school">
       <router-link to="/user">
         <el-button type="primary">请先选择您的学校</el-button>
       </router-link>
     </template>
     <template v-else>
-      <ul>
+      <ul class="actions">
         <li>
           <p>加入一个同乡会</p>
           <el-select
@@ -167,8 +167,8 @@ export default {
           ...this.sa,
         };
         AssociationService.createAssociation(data)
-          .then((res) => {
-            console.log(res);
+          .then(() => {
+            this.$router.go(0);
           });
       } else {
         this.createStep = this.createStep + 1;
@@ -197,6 +197,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.not-join {
+  max-width: 720px;
+  margin: auto;
+  padding: 10px;
+  > .title {
+    height: 42px;
+    line-height: 42px;
+    padding-left: 16px;
+    margin-bottom: 10px;
+    font-size: 15px;
+    box-shadow: 0 2px 4px 0 rgba(121, 146, 185, .54);
+    border-radius: 4px;
+    color: #666666;
+    background-color: #fff;
+  }
+  .actions {
+    padding: 10px 20px 20px 20px;
+    box-shadow: 0 2px 4px 0 rgba(121, 146, 185, .54);
+    border-radius: 4px;
+    background-color: #fff;
+    list-style: none;
+  }
+}
+
 .step-block {
   margin-top: 22px;
 }

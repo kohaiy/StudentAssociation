@@ -18,7 +18,7 @@
               <span v-if="scope.row.isManager" class="el-icon-star-on text-primary"></span>
               <span v-else class="fa fa-angellist text-primary"></span>
             </el-tooltip>
-            <el-tooltip effect="dark"
+            <el-tooltip v-if="$store.state.user._id !== scope.row._id" effect="dark"
                         content="发送消息"
                         placement="right">
               <router-link :to="'/message/whisper/' + scope.row._id"
@@ -45,7 +45,7 @@
           fixed="right"
           label="操作">
           <template slot-scope="scope">
-            <el-dropdown>
+            <el-dropdown v-if="scope.row.operations.length">
               <div class="el-dropdown-link">
                 <el-button class="el-dropdown-link" type="text"
                            size="mini" icon="el-icon-setting">设置
@@ -106,7 +106,6 @@ export default {
     setOperations() {
       this.members = this.members.map((m) => {
         const operations = [];
-        console.log(this.isChairman);
         // 管理员（包括会长）操作
         if (this.isManager && m._id !== this.association.chairman) {
           if (this.isChairman) {
@@ -133,18 +132,17 @@ export default {
             });
           }
         }
-        if (operations.length < 1) {
-          operations.push({
-            label: '暂无操作',
-            action: () => this.$message.error('Nothing was done.'),
-          });
-        }
+        // if (operations.length < 1) {
+        //   operations.push({
+        //     label: '暂无操作',
+        //     action: () => this.$message.error('Nothing was done.'),
+        //   });
+        // }
         m.isChairman = this.association.chairman === m._id;
         m.isManager = this.association.managers.indexOf(m._id) > -1;
         m.operations = operations;
         return m;
       });
-      console.log(this.members);
     },
     setMemberToManager(_id) {
       this.$confirm('是否确定设置管理员', '提示', {

@@ -1,8 +1,5 @@
 <template>
   <div class="safe common-container">
-    <div class="title">
-      <span>用户安全中心</span>
-    </div>
     <div class="change-password">
       <div class="title">修改密码</div>
       <el-form inline>

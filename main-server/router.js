@@ -1,4 +1,6 @@
 const router = require('koa-router')();
+const multer = require('koa-multer');
+// const images = require('images');
 const IndexController = require('./controller/IndexController');
 const SessionController = require('./controller/SessionController');
 const UserController = require('./controller/UserController');
@@ -32,6 +34,7 @@ module.exports = (app) => {
         .get('/message/list', MessageController.getMemberList)
         // .get('/message/:id', MessageController.getMessagesBy)
         .post('/message', MessageController.create)         // 创建消息
+        .post('/messages', MessageController.massMessage)   // 群发消息
         // .put('/message', MessageController.read)            // 设置消息为已读
         // .delete('/message/:id', MessageController.remove)       // 删除一条消息
         // .delete('/messages', MessageController.removeAll)   // 删除全部消息
@@ -40,6 +43,23 @@ module.exports = (app) => {
         .get('/cities', UtilController.getCities)           // 获取城市
         .get('/schools', UtilController.getSchools)         // 获取学校
     ;
+
+    // 配置
+    const storage = multer.diskStorage({
+        //文件保存路径
+        destination: function (req, file, cb) {
+            cb(null, 'public/uploads')
+        },
+        //修改文件名称
+        filename: function (req, file, cb) {
+            let fileFormat = (file.originalname).split(".");
+            cb(null, Date.now() + "." + fileFormat[fileFormat.length - 1]);
+        },
+    });
+    // 加载配置
+    const upload = multer({ storage: storage });
+    // 路由
+    router.post('/upload', upload.single('file'), UtilController.update);
 
     app.use(router.routes())
         .use(router.allowedMethods());

@@ -14,30 +14,10 @@
       <ul>
         <template v-if="$store.state.user">
           <li class="nav-item">
-            <a href="#"><span class="fa fa-envelope-o"></span>消息
-              <el-badge :value="unreadBadge.all"/>
-            </a>
-            <div class="child-item messages">
-              <ul>
-                <li>
-                  <router-link to="/message/system">
-                    系统通知
-                    <el-badge :value="unreadBadge.system"/>
-                  </router-link>
-                </li>
-                <li>
-                  <router-link to="/message/whisper">
-                    私密消息
-                    <el-badge :value="unreadBadge.whisper"/>
-                  </router-link>
-                </li>
-              </ul>
-            </div>
-          </li>
-          <li class="nav-item">
-            <a href="javascript: void(0)">
+            <router-link to="/user">
               <span class="fa fa-user-o"></span>
-              {{$store.state.user && $store.state.user.username}}</a>
+              {{$store.state.user && $store.state.user.username}}
+            </router-link>
             <div class="child-item messages">
               <ul>
                 <li>
@@ -54,6 +34,27 @@
                   <a @click="logout" href="javascript: void(0)" class="text-danger">
                     注销登录
                   </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <router-link to="/message"><span class="fa fa-envelope-o"></span>消息
+              <el-badge :value="$store.state.unreadBadge.all"/>
+            </router-link>
+            <div class="child-item messages">
+              <ul>
+                <li>
+                  <router-link to="/message/system">
+                    系统通知
+                    <el-badge :value="$store.state.unreadBadge.system"/>
+                  </router-link>
+                </li>
+                <li>
+                  <router-link to="/message/whisper">
+                    私密消息
+                    <el-badge :value="$store.state.unreadBadge.whisper"/>
+                  </router-link>
                 </li>
               </ul>
             </div>
@@ -80,24 +81,22 @@ export default {
   name: 'v-header',
   mounted() {
     this.currentActive = this.$route.path;
-    if (this.$store.state.user) {
-      MessageService.get('unread=1')
-        .then((res) => {
-          this.unreadBadge = res.data;
-        });
-    }
+    this.reloadUnread();
   },
   data() {
     return {
       currentActive: '/',
-      unreadBadge: {
-        all: 0,
-        system: 0,
-        whisper: 0,
-      },
     };
   },
   methods: {
+    reloadUnread() {
+      if (this.$store.state.user) {
+        MessageService.get('unread=1')
+          .then((res) => {
+            this.$store.commit('unread', res.data);
+          });
+      }
+    },
     logout() {
       UserService.logout();
       this.$message.success('用户退出登录成功！');
@@ -112,11 +111,10 @@ export default {
   watch: {
     $route() {
       this.currentActive = this.$route.path;
-      if (this.$store.state.user) {
-        MessageService.get('unread=1')
-          .then((res) => {
-            this.unreadBadge = res.data;
-          });
+      if (this.currentActive === '/message/system') {
+        this.$store.commit('unread', { system: 0 });
+      } else {
+        this.reloadUnread();
       }
     },
   },

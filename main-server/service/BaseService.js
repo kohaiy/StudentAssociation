@@ -63,6 +63,15 @@ class BaseService {
             message,
         }
     }
+
+
+    static getIndex(arr = [], item = '') {
+        if (arr instanceof Array) {
+            return arr.map(val => val && val.toString()).indexOf(item.toString());
+        }
+        return -1;
+    }
+
 }
 
 module.exports = BaseService;

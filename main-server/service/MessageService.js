@@ -31,9 +31,12 @@ class MessageService extends BaseService {
      * @param sender 发送者
      * @returns {Promise<{status: number, code: number, message: string, data: {}}>}
      */
-    static async getWhisperMessages(receiver, sender) {
+    static async getWhisperMessages(receiver, sender, { offset = 0, quantity = 10 } = {}) {
+        console.log(offset);
         const messages = await Message.find()
-            .or([{ receiver, sender }, { receiver: sender, sender: receiver }]);//.populate('sender');
+            .or([{ receiver, sender }, { receiver: sender, sender: receiver }])
+            .sort('-createTime').skip(+offset).limit(+quantity);
+        console.log(messages);
         await Message.update({
             receiver,
             sender: { $ne: null },
@@ -64,7 +67,7 @@ class MessageService extends BaseService {
             list.push(await User.findById(set[i], 'username'));
         }
         for (let i in set) {
-            list[i]._doc.unread = await Message.find({ sender: set[i],receiver: _id, status: false }).count();
+            list[i]._doc.unread = await Message.find({ sender: set[i], receiver: _id, status: false }).count();
         }
         return this.success(list);
     }
@@ -99,14 +102,12 @@ class MessageService extends BaseService {
      * @param receiver
      * @param content
      * @param sender
-     * @param title
      * @returns {Promise<*>}
      */
-    static async createWhisperMessage(receiver, content, sender, title) {
+    static async createWhisperMessage(receiver, content, sender) {
         let message = new Message({
             receiver,
             sender,
-            title,
             content,
             createTime: Date.now(),
         });
@@ -144,6 +145,31 @@ class MessageService extends BaseService {
         message.status = true;
         await message.save();
         return this.success();
+    }
+
+    /**
+     * 群发消息
+     * @param uid 群发人
+     * @param content 内容
+     * @returns {Promise.<*>}
+     */
+    static async massMessage(uid, content) {
+        const user = await User.findById(uid).populate('association');
+        // 判断当前用户是否为管理员
+        if (uid === user.association.chairman.toString()
+            || this.getIndex(user.association.managers, uid) > -1) {
+            const users = await User.find({ association: user.association._id }) || [];
+            // console.log(users);
+            for (let i in users) {
+                let result = await this.createSystemMessage(users[i],
+                    `${user.username}： ${content}`,
+                    `【${user.association.name}】通知`);
+                console.log(result);
+            }
+            return this.success();
+        } else {
+            return this.failure('权限不足：只有会长和管理员可以群发信息', 400);
+        }
     }
 
     /**

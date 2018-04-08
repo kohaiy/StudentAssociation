@@ -12,31 +12,21 @@
         <ul class="list">
           <li class="item">
             <span class="fa fa-home"></span>
-            <router-link to="/association">首页</router-link>
+            <router-link to="/association">基本信息</router-link>
           </li>
           <li class="item">
             <span class="fa fa-users"></span>
-            <router-link to="/association/member">成员</router-link>
+            <router-link to="/association/member">成员列表</router-link>
+          </li>
+          <li class="item">
+            <span class="fa fa-send"></span>
+            <router-link to="/association/mass">消息群发</router-link>
           </li>
         </ul>
       </aside>
       <main class="common-main-container">
         <router-view></router-view>
       </main>
-      <!--<el-row>-->
-      <!--<el-col :span="4">-->
-      <!--<el-menu-->
-      <!--:router="true"-->
-      <!--default-active="/user">-->
-      <!--<el-menu-item index="/association">首页</el-menu-item>-->
-      <!--<el-menu-item index="/association/member">成员</el-menu-item>-->
-      <!--</el-menu>-->
-      <!--</el-col>-->
-      <!--<el-col :span="20">-->
-      <!--<router-view></router-view>-->
-      <!--&lt;!&ndash;<pre style="overflow:auto;">{{user}}</pre>&ndash;&gt;-->
-      <!--</el-col>-->
-      <!--</el-row>-->
     </template>
   </div>
 </template>

@@ -18,4 +18,5 @@ module.exports = {
         expireTime: 2 * 60 * 60,    // token 2 小时失效
     },
     loginLogsMaxAge: 30 * 24 * 60 * 60, // 登录记录最长保留时间（s）
+    isQiniu: true,
 };

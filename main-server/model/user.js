@@ -56,6 +56,11 @@ const userSchema = new Schema({
         type: Date,
         default: Date.now(),
     },
+    // 头像
+    avatar: {
+        type: String,
+        default: null,
+    },
 });
 
 module.exports = mongoose.model('User', userSchema);

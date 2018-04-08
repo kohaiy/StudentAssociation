@@ -1,8 +1,5 @@
 <template>
   <div class="system common-container" v-loading.lock="!isLoad">
-    <div class="title">
-      <span>系统通知</span>
-    </div>
     <div v-if="!isLoad" class="placeholder-container">
       <message-item/>
       <message-item/>
@@ -59,7 +56,7 @@ export default {
       MessageService.get(`offset=${(this.quantity * this.loadTimes) + 1}&quantity=${this.quantity}`)
         .then((res) => {
           this.loadTimes = this.loadTimes + 1;
-          if (res.data.length < 1) {
+          if (res.data.length < this.quantity) {
             this.$message.warning('已经没有更多了');
             this.isLoadAll = true;
           } else {
@@ -78,8 +75,6 @@ export default {
 
 <style lang="scss" scoped>
 .system {
-  /*max-width: 720px;*/
-  /*margin: auto;*/
   .title {
     height: 42px;
     line-height: 42px;

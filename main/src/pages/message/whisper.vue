@@ -1,8 +1,5 @@
 <template>
   <div class="whisper common-container" v-loading.lock="!isLoad">
-    <div class="title">
-      <span>我的消息</span>
-    </div>
     <div class="chat">
       <div class="list">
         <div class="list-title">
@@ -17,7 +14,7 @@
               :to="'/message/whisper/' + m._id"
               :title="m.username">
               <span class="fa fa-user-circle"></span><span>{{m.username}}</span>
-              <el-badge :value="m.unread" />
+              <el-badge :value="m._id === $route.params.id ? 0 : m.unread"/>
             </router-link>
           </div>
         </div>
@@ -36,6 +33,12 @@
         <template v-else>
           <div ref="messageWrapper" class="message-list">
             <div class="message-list-content">
+              <div v-if="!isLoadAll" class="load-more">
+                <el-button @click="loadMore" type="text" size="mini">加载更多～</el-button>
+              </div>
+              <div v-else class="not-more">
+                <span>没有更多了～</span>
+              </div>
               <div v-for="message in messages" :key="message._id">
                 <div class="msg-time">
                   <span class="time">{{message.createTime | formatDate}}</span>
@@ -137,6 +140,10 @@ export default {
   data() {
     return {
       isLoad: false,
+      isLoadAll: false,
+      loadTimes: 1, // 加载更多次数
+      quantity: 10, // 加载消息数量
+      sendTimes: 0, // 发送次数
       members: [],
       messages: [],
       messageContent: '',
@@ -173,17 +180,7 @@ export default {
                   this.isLoad = true;
                 });
             } else {
-              MessageService.get(`whisper=${this.activeUserId}`)
-                .then((res2) => {
-                  this.messages = res2.data;
-                  this.$nextTick(() => {
-                    this.messageScroll.refresh();
-                    this.messageScroll.scrollTo(0, this.messageScroll.maxScrollY);
-                  });
-                  setTimeout(() => {
-                    this.isLoad = true;
-                  }, this.$loadingDelayTime);
-                });
+              this.refresh();
             }
           } else {
             setTimeout(() => {
@@ -192,12 +189,20 @@ export default {
           }
         });
     },
+    // 刷新聊天数据
     refresh() {
+      this.isLoadAll = false;
+      this.loadTimes = 1;
+      this.sendTimes = 0;
       if (this.activeUserId) {
         this.isLoad = false;
-        MessageService.get(`whisper=${this.activeUser._id}`)
-          .then((res2) => {
-            this.messages = res2.data;
+        MessageService.get(`whisper=${this.activeUser._id}&offset=0&quantity=${this.quantity}`)
+          .then((res) => {
+            this.messages = res.data.sort((m1, m2) =>
+              new Date(m1.createTime).getTime() - new Date(m2.createTime).getTime());
+            if (this.messages.length < 10) {
+              this.isLoadAll = true;
+            }
             this.$nextTick(() => {
               this.messageScroll.refresh();
               this.messageScroll.scrollTo(0, this.messageScroll.maxScrollY);
@@ -208,12 +213,36 @@ export default {
           });
       }
     },
+    // 加载更多
+    loadMore() {
+      this.isLoad = false;
+      MessageService.get(`whisper=${this.activeUser._id}&offset=${(this.loadTimes * this.quantity) + this.sendTimes}&quantity=${this.quantity}`)
+        .then((res) => {
+          this.messages = (res.data.sort((m1, m2) =>
+            new Date(m1.createTime).getTime() - new Date(m2.createTime).getTime()))
+            .concat(this.messages);
+          if (res.data.length < 10) {
+            this.isLoadAll = true;
+          }
+          this.loadTimes = this.loadTimes + 1;
+          this.$nextTick(() => {
+            const currentY = this.messageScroll.maxScrollY;
+            this.messageScroll.refresh();
+            this.messageScroll.scrollTo(0, this.messageScroll.maxScrollY - currentY);
+          });
+          setTimeout(() => {
+            this.isLoad = true;
+          }, this.$loadingDelayTime);
+        });
+    },
+    // 发送消息
     sendMessage() {
       if (this.messageContent) {
         MessageService.sendMessage(this.activeUserId, this.messageContent)
           .then((res) => {
             this.messages.push(res.data);
             this.messageContent = '';
+            this.sendTimes = this.sendTimes + 1;
             // 滚动到底部
             this.$nextTick(() => {
               this.messageScroll.refresh();
@@ -254,7 +283,6 @@ export default {
       }
     },
     activeUserId(newVal, oldVal) {
-      // console.log('userid change');
       if (!oldVal) {
         this.$nextTick(() => {
           this.messageScroll = new BScroll(this.$refs.messageWrapper, {
@@ -374,6 +402,11 @@ export default {
         overflow: hidden;
         background-color: #f4f4f4;
         .message-list-content {
+          .load-more,
+          .not-more {
+            margin: 10px;
+            text-align: center;
+          }
           .msg-time {
             padding: 16px 0;
             text-align: center;
