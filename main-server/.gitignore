@@ -18,3 +18,4 @@ config/qiniu.js
 *.njsproj
 *.sln
 /data/
+/public/uploads/
