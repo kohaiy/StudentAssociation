@@ -9,6 +9,10 @@ const ticketSchema = new Schema({
         ref: 'User',
         required: [true, '成员信息不能为空。'],
     },
+    charteredBus: {
+        type: Schema.Types.ObjectId,
+        ref: 'CharteredBus',
+    },
     phone: {
         type: String,
         required: [true, '登记成员联系方式不能为空。']

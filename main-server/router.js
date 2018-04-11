@@ -6,6 +6,7 @@ const SessionController = require('./controller/SessionController');
 const UserController = require('./controller/UserController');
 const AssociationController = require('./controller/AssociationController');
 const MessageController = require('./controller/MessageController');
+const NoticeController = require('./controller/NoticeController');
 const UtilController = require('./controller/UtilController');
 
 module.exports = (app) => {
@@ -39,10 +40,15 @@ module.exports = (app) => {
         // .delete('/message/:id', MessageController.remove)       // 删除一条消息
         // .delete('/messages', MessageController.removeAll)   // 删除全部消息
 
+        .get('/notices', NoticeController.get)              // 获取所有公告
+        .post('/notice', NoticeController.create)           // 创建公告
+        .put('/notice/:id', NoticeController.update)        // 更新公告
+        .delete('/notice/:id', NoticeController.delete)     // 删除公告
+
         .get('/provinces', UtilController.getProvinces)     // 获取所有省份
         .get('/cities', UtilController.getCities)           // 获取城市
         .get('/schools', UtilController.getSchools)         // 获取学校
-    ;
+        ;
 
     // 配置
     const storage = multer.diskStorage({

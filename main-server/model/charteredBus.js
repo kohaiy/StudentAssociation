@@ -15,6 +15,10 @@ const charteredBusSchema = new Schema({
         ref: 'Association',
         required: [true, '同乡会不能为空。'],
     },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    },
     // 最大座位数
     maxSeat: {
         type: Number,

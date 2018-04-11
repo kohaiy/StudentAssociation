@@ -20,13 +20,11 @@
           <el-input v-model="user.username" :disabled="true"></el-input>
         </el-form-item>
         <el-form-item class="short-item" label="昵称">
-          <el-input @blur="changeNickname"
-                    @keyup.enter.native="changeNickname"
+          <el-input @change="changeNickname"
                     v-model="user.nickname"></el-input>
         </el-form-item>
         <el-form-item class="short-item" label="姓名">
-          <el-input @blur="changeRealName"
-                    @keyup.enter.native="changeRealName"
+          <el-input @change="changeRealName"
                     v-model="user.realName"></el-input>
         </el-form-item>
         <el-form-item label="性别">

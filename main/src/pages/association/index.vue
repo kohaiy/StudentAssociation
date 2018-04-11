@@ -7,7 +7,7 @@
     <template v-else-if="isLoad">
       <aside class="common-sidebar">
         <div class="title">
-          <span class="fa fa-users icon"></span><span>同乡会中心</span>
+          <span class="fa fa-circle-o icon"></span><span>同乡会中心</span>
         </div>
         <ul class="list">
           <li class="item">
@@ -15,12 +15,16 @@
             <router-link to="/association">基本信息</router-link>
           </li>
           <li class="item">
+            <span class="fa fa-bullhorn"></span>
+            <router-link to="/association/notice">公告中心</router-link>
+          </li>
+          <li class="item">
             <span class="fa fa-users"></span>
             <router-link to="/association/member">成员列表</router-link>
           </li>
           <li class="item">
-            <span class="fa fa-send"></span>
-            <router-link to="/association/mass">消息群发</router-link>
+            <span class="fa fa-cogs"></span>
+            <router-link to="/association/manager">管理中心</router-link>
           </li>
         </ul>
       </aside>

@@ -84,6 +84,14 @@
   }
 }
 
+.word-not-break-line {
+  .cell {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+}
+
 .common-layout {
   position: absolute;
   left: 0;
