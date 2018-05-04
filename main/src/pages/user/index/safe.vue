@@ -1,7 +1,7 @@
 <template>
   <div class="safe common-container">
     <div class="item change-password">
-      <div class="title">修改密码</div>
+      <div class="title"><span class="fa fa-key"></span>修改密码</div>
       <el-form label-width="68px">
         <el-form-item label="旧密码：">
           <el-input v-model="oldPassword" type="password" class="short-input"></el-input>
@@ -15,7 +15,7 @@
       </el-form>
     </div>
     <div class="item account-association">
-      <div class="title">账号关联</div>
+      <div class="title"><span class="fa fa-link"></span>账号关联</div>
       <el-form label-width="82px">
         <el-form-item label="手机号码：" class="phone-numbers">
           <el-input value="13535353535" class="short-item" disabled></el-input>
@@ -51,7 +51,7 @@
       </el-form>
     </div>
     <div class="item login-logs">
-      <div class="title">登录日志</div>
+      <div class="title"><span class="fa fa-file-text"></span>登录日志</div>
       <ul>
         <li v-for="log in logs" :key="log">{{log | formatDate}}</li>
       </ul>

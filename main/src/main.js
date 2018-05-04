@@ -64,6 +64,9 @@ router.beforeEach((to, from, next) => {
     UserService.getUser()
       .then(() => {
         next();
+      })
+      .catch(() => {
+        store.commit('user', null);
       });
   }
 });

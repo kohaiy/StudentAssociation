@@ -6,7 +6,7 @@
     </div>
     <div class="container-wrapper clearfix">
       <div class="panel main-container">
-        文章内容
+        虚位以待！！！
       </div>
       <div class="panel user-panel">
         <div class="no-login">

@@ -25,7 +25,7 @@
 import VNotice from './manager/notice';
 import VMass from './manager/mass';
 import VInfo from './manager/info';
-import VCharteredBus from './manager/charteredBus';
+// import VCharteredBus from './manager/'
 
 export default {
   name: 'manager',
@@ -33,7 +33,7 @@ export default {
     VNotice,
     VMass,
     VInfo,
-    VCharteredBus,
+    // VCharteredBus,
   },
 };
 </script>
