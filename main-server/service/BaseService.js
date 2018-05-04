@@ -64,12 +64,36 @@ class BaseService {
         }
     }
 
+    /**
+     * 判断用户是否为同乡会管理员或会长
+     * @param {String} uid 用户 id
+     */
+    static async isManager(uid) {
+        const manager = await User.findById(uid);
+        const association = await Association.findById(manager.association);
+        // 为会长 或 manager 是该同乡会管理员 并且
+        if (association.chairman.toString() === uid
+            || this.getIndex(association.managers, uid) > -1) {
+                return true;
+            }else {
+                return false;
+            }
+    }
 
     static getIndex(arr = [], item = '') {
         if (arr instanceof Array) {
             return arr.map(val => val && val.toString()).indexOf(item.toString());
         }
         return -1;
+    }
+
+    static random(type = Number, length = 4) {
+        let randomChar = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+        let res = [];
+        for (let i = 0; i < length; i++) {
+            res.push(randomChar[Math.round(Math.random() * (randomChar.length - 1))]);
+        }
+        return res.join('');
     }
 
 }

@@ -2,11 +2,7 @@ import api from '../api';
 // import store from '../store';
 
 const AssociationService = {
-  /**
-   * 通过学校 id 获取同乡会列表
-   * @param schoolId
-   * @returns {Promise<any>}
-   */
+
   getBySchoolId(schoolId) {
     return new Promise((resolve = () => {
     }, reject = () => {
@@ -84,6 +80,24 @@ const AssociationService = {
     }, reject = () => {
     }) => {
       api.put(`/association?action=${action}`, { id })
+        .then((res) => {
+          if (res.status === 0) {
+            resolve(res);
+          } else {
+            reject(res);
+          }
+        })
+        .catch((error) => {
+          reject(error.data.message);
+        });
+    });
+  },
+
+  updateInfo(info) {
+    return new Promise((resolve = () => {
+    }, reject = () => {
+    }) => {
+      api.put('/association?action=info', info)
         .then((res) => {
           if (res.status === 0) {
             resolve(res);

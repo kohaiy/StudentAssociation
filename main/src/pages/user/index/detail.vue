@@ -1,11 +1,11 @@
 <template>
   <div class="detail common-container" v-loading.fullscreen.lock="!isLoad">
     <div class="detail-list" v-show="isLoad">
-      <el-form label-width="80px">
-        <el-form-item label="头像">
+      <el-form label-width="82px">
+        <el-form-item label="头像：">
           <el-upload
             class="avatar-uploader"
-            action="http://localhost:3000/upload"
+            :action="apiPath + '/upload'"
             :show-file-list="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload">
@@ -16,27 +16,65 @@
              avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
-        <el-form-item class="short-item" label="用户名">
+        <el-form-item class="short-item" label="用户名：">
           <el-input v-model="user.username" :disabled="true"></el-input>
         </el-form-item>
-        <el-form-item class="short-item" label="昵称">
-          <el-input @blur="changeNickname"
-                    @keyup.enter.native="changeNickname"
+        <el-form-item class="short-item" label="昵称：">
+          <el-input @change="updateInfo('nickname')"
                     v-model="user.nickname"></el-input>
         </el-form-item>
-        <el-form-item class="short-item" label="姓名">
-          <el-input @blur="changeRealName"
-                    @keyup.enter.native="changeRealName"
+        <el-form-item class="short-item" label="姓名：">
+          <el-input @change="updateInfo('realName')"
                     v-model="user.realName"></el-input>
         </el-form-item>
-        <el-form-item label="性别">
-          <el-radio-group @change="changeGender" v-model.number="user.gender">
+        <el-form-item label="性别：">
+          <el-radio-group @change="updateInfo('gender')" v-model.number="user.gender">
             <el-radio-button label="0">男</el-radio-button>
             <el-radio-button label="1">女</el-radio-button>
             <el-radio-button label="-1">保密</el-radio-button>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="地区">
+        <el-form-item class="medium-item1" label="邮箱地址：">
+          <el-autocomplete
+            class="medium-item"
+            v-model.trim="user.email"
+            :fetch-suggestions="autoAddEmailFix"
+            placeholder="电子邮箱地址"
+            :trigger-on-focus="false"
+            @select="updateInfo('email')"
+          ></el-autocomplete>
+          <el-checkbox
+            @change="updateInfo('openEmail')"
+            v-model="user.openEmail">公开
+          </el-checkbox>
+        </el-form-item>
+        <el-form-item class="medium-item1" label="手机号码：">
+          <el-input class="medium-item"
+                    @change="updateInfo('phoneNumber')"
+                    v-model.trim="user.phoneNumber"></el-input>
+          <el-button @click="changePhoneNumbersDialogVisible = true">更换</el-button>
+          <el-dialog
+            title="更换手机号码"
+            :visible.sync="changePhoneNumbersDialogVisible">
+            <el-row>
+              <el-col :span="12">
+                <el-input placeholder="手机号码"></el-input>
+              </el-col>
+              <el-col :span="12">
+                <el-button>发送验证码</el-button>
+              </el-col>
+            </el-row>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </div>
+          </el-dialog>
+          <el-checkbox
+            @change="updateInfo('openPhoneNumber')"
+            v-model="user.openPhoneNumber">公开
+          </el-checkbox>
+        </el-form-item>
+        <el-form-item label="地区：">
           <el-select v-model="province" placeholder="省份">
             <el-option v-for="p in provinces" :key="p._id"
                        :label="p.name" :value="p._id"></el-option>
@@ -46,19 +84,19 @@
                        :label="c.name" :value="c._id"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="学校">
+        <el-form-item label="学校：">
           <el-button @click="isShowSchoolDialog = true">
             {{user.school && user.school.name || '选择学校'}}
           </el-button>
         </el-form-item>
-        <el-form-item label="同乡会">
+        <el-form-item label="同乡会：">
           <router-link to="/association">
             <el-button>
               {{user.association && user.association.name || '加入同乡会'}}
             </el-button>
           </router-link>
         </el-form-item>
-        <el-form-item label="注册时间">
+        <el-form-item label="注册时间：">
           <span>{{user.registerTime | formatDate}}</span>
         </el-form-item>
       </el-form>
@@ -98,7 +136,6 @@
 <script>
 import UtilService from '../../../service/UtilService';
 import UserService from '../../../service/UserService';
-// import TestService from '../../../service/TestService';
 
 export default {
   name: 'detail',
@@ -122,6 +159,8 @@ export default {
         username: '',
         nickname: '',
         realName: '',
+        email: '',
+        phoneNumber: '',
         gender: -1,
         avatar: '',
       },
@@ -136,6 +175,25 @@ export default {
       sSchool: null,
       sCities: [],
       sSchools: [],
+      commonEmailFix: [
+        '@qq.com',
+        '@163.com',
+        '@163.net',
+        '@gmail.com',
+        '@yahoo.com',
+        '@msn.com',
+        '@hotmail.com',
+        '@aol.com',
+        '@ask.com',
+        '@live.com',
+        '@0355.net',
+        '@263.net',
+        '@3721.net',
+        '@yeah.net',
+        '@googlemail.com',
+        '@mail.com',
+      ],
+      changePhoneNumbersDialogVisible: false,
     };
   },
   methods: {
@@ -151,19 +209,9 @@ export default {
         .then(() => this.$message.success('更新成功！'))
         .catch(error => this.$message.error(error));
     },
-    changeGender() {
-      UserService.updateInfo({ gender: this.user.gender })
-        .then(() => this.$message.success('更新成功！'))
-        .catch(error => this.$message.error(error));
-    },
-    changeNickname() {
-      UserService.updateInfo({ nickname: this.user.nickname })
-        .then(() => this.$message.success('更新成功！'))
-        .catch(error => this.$message.error(error));
-    },
-    changeRealName() {
-      UserService.updateInfo({ realName: this.user.realName })
-        .then(() => this.$message.success('更新成功！'))
+    updateInfo(field) {
+      UserService.updateInfo({ [field]: this.user[field] })
+        .then(() => this.$message.success('更新信息成功'))
         .catch(error => this.$message.error(error));
     },
     changeSchool() {
@@ -198,6 +246,16 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!');
       }
       return isAllowType && isLt2M;
+    },
+    autoAddEmailFix(prefix, cb) {
+      if (prefix && prefix.indexOf('@') < 0) {
+        const results = this.commonEmailFix.map(fix => ({
+          value: prefix + fix,
+        }));
+        cb(results);
+      } else {
+        cb([]);
+      }
     },
   },
   computed: {},
@@ -242,6 +300,9 @@ export default {
     background-color: #fff;
     .short-item {
       max-width: 250px;
+    }
+    .medium-item {
+      width: 200px;
     }
   }
   .avatar-uploader {

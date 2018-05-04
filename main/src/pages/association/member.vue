@@ -1,7 +1,16 @@
 <template>
   <div class="member common-container" v-loading.lock="!isLoad">
-    <div v-if="isLoad" style="padding: 10px;">
+    <div v-if="isLoad" class="member-wrapper">
+      <div class="actions clearfix">
+        <el-button
+          @click="exportData" icon="fa fa-download"
+          :disabled="!association"
+          type="success" size="mini"
+          class="pull-right">导出成员列表
+        </el-button>
+      </div>
       <el-table
+        id="table"
         :data="members"
         border
         style="">
@@ -34,7 +43,24 @@
           </template>
         </el-table-column>
         <el-table-column
+          prop="email"
+          label="邮箱">
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ scope.row.email || '（未设置）' }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="phoneNumber"
+          width="120px"
+          label="手机号码">
+          <template slot-scope="scope">
+            <span style="margin-left: 10px">{{ scope.row.phoneNumber || '（未设置）' }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
           prop="gender"
+          width="75px"
+          align="center"
           label="性别">
           <template slot-scope="scope">
             <span style="margin-left: 10px">{{ scope.row.gender | formatGender }}</span>
@@ -43,6 +69,7 @@
         <el-table-column
           v-if="isManager"
           fixed="right"
+          width="70px"
           label="操作">
           <template slot-scope="scope">
             <el-dropdown v-if="scope.row.operations.length">
@@ -70,6 +97,8 @@
 </template>
 
 <script>
+import FileSaver from 'file-saver';
+import XLSX from 'xlsx';
 import AssociationService from '../../service/AssociationService';
 
 export default {
@@ -220,6 +249,31 @@ export default {
         });
       });
     },
+    exportData() {
+      const workbook = XLSX.utils.book_new();
+      const data = this.members.map((m) => {
+        const res = {
+          ID: m._id,
+          UserName: m.username,
+          NickName: m.nickname,
+          Email: m.email,
+          PhoneNumber: m.phoneNumber,
+        };
+        res.Gender = ['保密', '男', '女'][m.gender + 1];
+        return res;
+      });
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      XLSX.utils.book_append_sheet(workbook, worksheet, '成员列表');
+      const workbookOut = XLSX.write(workbook, { bookType: 'xlsx', bookSST: true, type: 'array' });
+      try {
+        FileSaver.saveAs(new Blob([workbookOut], { type: 'application/octet-stream' }),
+          `[${this.association.name}]成员列表-${this.moment().format('YYYYMMDDHHmmss')}.xlsx`,
+        );
+      } catch (e) {
+        console.log(e);
+        this.$message.error('导出同乡会成员列表失败，请稍后重试');
+      }
+    },
   },
   computed: {
     // 当前登录用户是否为 会长
@@ -237,6 +291,15 @@ export default {
 
 <style lang="scss" scoped>
 .member {
+  .member-wrapper {
+    padding: 20px 20px 20px;
+    box-shadow: 0 2px 4px 0 rgba(121, 146, 185, .54);
+    border-radius: 4px;
+    background-color: #fff;
+    .actions {
+      margin-bottom: 10px;
+    }
+  }
   a {
     text-decoration: none;
   }

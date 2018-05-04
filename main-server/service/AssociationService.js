@@ -74,8 +74,15 @@ class AssociationService extends BaseService {
      */
     static async getMembersByAid(uid) {
         const user = await User.findById(uid);
-        const members = await User.find({ association: user.association }, 'username nickname gender');
-        return this.success(members);
+        const members = await User.find({ association: user.association }, '-password');
+        const filtered = members.map((member) => {
+            let { _id, username, nickname, gender, openEmail, openPhoneNumber, email, phoneNumber } = member._doc;
+            const temp = { _id, username, nickname, gender };
+            temp.email = openEmail ? email : email && email.slice(0, 2) + '***';
+            temp.phoneNumber = openPhoneNumber ? phoneNumber : phoneNumber && phoneNumber.slice(0, 2) + '***';
+            return temp;
+        });
+        return this.success(filtered);
     }
 
     /**
@@ -148,8 +155,8 @@ class AssociationService extends BaseService {
      * @returns {Promise<*>}
      */
     static async setMemberOut(managerId, memberId) {
-        console.log(managerId);
-        console.log(memberId);
+        // console.log(managerId);
+        // console.log(memberId);
         const manager = await User.findById(managerId);
         const member = await User.findById(memberId);
         const association = await Association.findById(manager.association);
@@ -168,6 +175,54 @@ class AssociationService extends BaseService {
             return this.success();
         } else {
             return this.failure('权限不足');
+        }
+    }
+
+    static async updateInfo(uid, info) {
+        // 判断是否为 会长 或 管理员
+        const { error, user } = await this.isChairmanOrManager(uid);
+        if (error) {
+            return error;
+        }
+        let association = await Association.findById(user.association._id);
+        for (let key in info) {
+            if (info.hasOwnProperty(key) && key !== 'address') {
+                association[key] = info[key];
+            }
+        }
+        // association.name = name;
+        // association.description = description || association.description;
+        // association.joinMsg = joinMsg || association.joinMsg;
+        if (info.hasOwnProperty('address')) {
+            association.addresses.unshift(info.address);
+        }
+        if (info.hasOwnProperty('-address')) {
+            association.addresses.splice(association.addresses.indexOf(info['-address']), 1);
+        }
+        const errors = this.validate(association);
+        if (errors) {
+            return errors;
+        }
+        association = await association.save();
+        return this.success(association);
+    }
+
+    /**
+     * 判断用户是否为同乡会会长或管理员
+     * @param {String} uid user id
+     * @returns {user | error} true时返回user，false时返回error
+     */
+    static async isChairmanOrManager(uid) {
+        const user = await User.findById(uid).populate('association');
+        if (user.association.chairman.toString() === uid
+            || this.getIndex(user.association.managers, uid) > -1) {
+            return {
+                user,
+            };
+        } else {
+            return {
+                error: this.failure('权限不足：只有会长和管理员有权限执行此操作'),
+            };
         }
     }
 }

@@ -6,7 +6,7 @@ const associationSchema = new Schema({
     // 同乡会名称
     name: {
         type: String,
-        required: true,
+        required: [true, '同乡会名称不能为空'],
         minlength: [3, '同乡会名称不能短于 3 个字符'],
         maxlength: [20, '同乡会名称不能长于 20 个字符'],
     },
@@ -61,7 +61,11 @@ const associationSchema = new Schema({
     },
     // 常用地址
     addresses: {
-        type: [String],
+        type: [{
+            type: String,
+            minlength: 2,
+            maxlength: 50,
+        }],
     },
 });
 

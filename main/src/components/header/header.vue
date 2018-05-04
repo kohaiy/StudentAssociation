@@ -1,12 +1,16 @@
 <template>
-  <header class="header clearfix">
+  <header :class="{ 'header-index': $route.path === '/' }" class="header clearfix">
+    <div class="blur-bg"></div>
     <div class="nav-con pull-left">
       <ul>
         <li class="nav-item">
           <router-link to="/">HOME</router-link>
         </li>
         <li class="page-title">
-          <span class="fa fa-clone"></span>{{$route.name}}
+          <span class="hide-sm-ib"><span class="fa fa-clone"></span>{{$route.name}}</span>
+          <label class="show-sm-ib" for="sidebarCheckbox">
+            <span class="fa fa-bars"></span>
+          </label>
         </li>
       </ul>
     </div>
@@ -40,20 +44,26 @@
           </li>
           <li class="nav-item">
             <router-link to="/message"><span class="fa fa-envelope-o"></span>消息
-              <el-badge :value="$store.state.unreadBadge.all"/>
+              <el-badge
+                :hidden="!$store.state.unreadBadge.all"
+                :value="$store.state.unreadBadge.all"/>
             </router-link>
             <div class="child-item messages">
               <ul>
                 <li>
                   <router-link to="/message/system">
                     系统通知
-                    <el-badge :value="$store.state.unreadBadge.system"/>
+                    <el-badge
+                      :hidden="!$store.state.unreadBadge.system"
+                      :value="$store.state.unreadBadge.system"/>
                   </router-link>
                 </li>
                 <li>
                   <router-link to="/message/whisper">
                     私密消息
-                    <el-badge :value="$store.state.unreadBadge.whisper"/>
+                    <el-badge
+                      :hidden="!$store.state.unreadBadge.whisper"
+                      :value="$store.state.unreadBadge.whisper"/>
                   </router-link>
                 </li>
               </ul>
@@ -124,6 +134,39 @@ export default {
 <style lang="scss" scoped>
 @import "../../assets/styles/variables";
 
+.header.header-index {
+  border-bottom: 0;
+  .blur-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url(navbar.png) no-repeat center top;
+    background-size: auto 150px;
+    filter: blur(4px);
+    &:after {
+      content: ' ';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: hsla(0, 0%, 100%, .4);
+    }
+  }
+  .nav-con {
+    .nav-item {
+      &:hover {
+        background-color: rgba(255, 255, 255, .3);
+      }
+      .child-item {
+        background-color: rgba(255, 255, 255, .8);
+      }
+    }
+  }
+}
+
 .header {
   z-index: 1002;
   position: relative;
@@ -153,6 +196,9 @@ export default {
       color: #666666;
       .fa {
         margin-right: 5px;
+      }
+      label {
+        cursor: pointer;
       }
     }
     .nav-item {
@@ -219,10 +265,4 @@ export default {
   }
 }
 
-/*.el-submenu {*/
-/*.el-menu {*/
-/*position: relative;*/
-/*right: 220px;*/
-/*}*/
-/*}*/
 </style>

@@ -84,20 +84,43 @@
   }
 }
 
+.word-not-break-line {
+  &,
+  .cell {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+}
+
+.show-sm-ib {
+  display: none;
+}
+
+.hide-sm-ib {
+  display: inline-block;
+}
+
 .common-layout {
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
   width: 100%;
+  #sidebarCheckbox {
+    display: none;
+  }
   .common-sidebar {
+    z-index: 1000;
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
     width: 140px;
     overflow: auto;
+    transition: all .3s;
     background-color: rgba(255, 255, 255, .8);
+    border-right: 1px solid #dddddd;
     .title {
       height: 62px;
       line-height: 62px;
@@ -119,6 +142,12 @@
       .item {
         height: 40px;
         line-height: 40px;
+        transition: color .3s;
+        &:hover {
+          &, a {
+            color: $--color-primary;
+          }
+        }
         .fa {
           margin-right: 10px;
         }
@@ -137,6 +166,7 @@
     bottom: 0;
     padding: 10px;
     overflow: auto;
+    transition: left .3s;
     .common-container {
       max-width: 720px;
       margin: auto;
@@ -155,7 +185,78 @@
   }
 }
 
+.el-dialog__wrapper {
+  &[size="300px"] {
+    .el-dialog {
+      max-width: 300px !important;
+    }
+  }
+  &[size="400px"] {
+    .el-dialog {
+      max-width: 400px !important;
+    }
+  }
+  &[size="500px"] {
+    .el-dialog {
+      max-width: 500px !important;
+    }
+  }
+  &[size="600px"] {
+    .el-dialog {
+      max-width: 600px !important;
+    }
+  }
+  .el-dialog {
+    width: 768px !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .show-sm-ib {
+    display: inline-block;
+  }
+  .hide-sm-ib {
+    display: none;
+  }
+  .common-layout {
+    #sidebarCheckbox {
+      &:checked {
+        ~ .common-sidebar {
+          left: 0;
+        }
+        ~ .common-main-container {
+          //left: 140px;
+        }
+      }
+    }
+    .common-sidebar {
+      left: -140px;
+      background-color: #fff;
+      //border-right: 1px solid #dddddd;
+    }
+    .common-main-container {
+      left: 0;
+    }
+  }
+
+  .el-dialog__wrapper {
+    .el-dialog {
+      width: 100% !important;
+    }
+  }
+}
+
 .fa {
   margin-right: 5px;
 }
 
+.el-input-number__decrease .el-icon-minus,
+.el-input-number__increase .el-icon-plus {
+  line-height: 38px;
+}
+
+//.geetest_holder.geetest_wind.geetest_detect {
+//  width: 100% !important;
+//  min-width: 0;
+//  overflow: hidden;
+//}

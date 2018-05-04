@@ -1,5 +1,6 @@
 <template>
   <div class="index common-layout">
+    <input id="sidebarCheckbox" type="checkbox">
     <aside class="common-sidebar">
       <div class="title">
         <span class="fa fa-paper-plane icon"></span><span>消息中心</span>

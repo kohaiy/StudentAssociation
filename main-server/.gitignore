@@ -19,3 +19,5 @@ config/qiniu.js
 *.sln
 /data/
 /public/uploads/
+/util/geetest.js
+/config/alisms.js

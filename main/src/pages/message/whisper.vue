@@ -14,7 +14,9 @@
               :to="'/message/whisper/' + m._id"
               :title="m.username">
               <span class="fa fa-user-circle"></span><span>{{m.username}}</span>
-              <el-badge :value="m._id === $route.params.id ? 0 : m.unread"/>
+              <el-badge
+                :hidden="!(m._id === $route.params.id ? 0 : m.unread)"
+                :value="m._id === $route.params.id ? 0 : m.unread"/>
             </router-link>
           </div>
         </div>

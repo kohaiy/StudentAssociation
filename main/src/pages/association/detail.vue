@@ -2,18 +2,15 @@
   <div class="detail common-container" v-loading.fullscreen.lock="!isLoad">
     <div v-if="isLoad" class="wrapper">
       <div class="title">{{association.name}}（地区：{{association.city.name}}）</div>
-      <el-form size="small" label-width="100px">
+      <el-form size="small" label-width="82px">
         <el-form-item label="学校：">
           <span>{{association.school.name}}</span>
         </el-form-item>
         <el-form-item label="名称：">
           <span>{{association.name}}</span>
-          <el-input v-model="association.name">
-          </el-input>
         </el-form-item>
         <el-form-item label="简介：">
           <span>{{association.description}}</span>
-          <el-input autosize type="textarea" v-model="association.description"></el-input>
         </el-form-item>
         <el-form-item label="会长：">
           <span>{{association.chairman.username}}（{{association.chairman.nickname}}）</span>
@@ -47,7 +44,6 @@ export default {
     AssociationService.getById('city=1&chairman=1&school=1&managers=1')
       .then((res) => {
         this.association = res.data;
-        console.log(this.association);
         this.isLoad = true;
       });
   },

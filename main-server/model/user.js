@@ -30,6 +30,36 @@ const userSchema = new Schema({
         minlength: [2, '真实姓名不能短于 2 个字符。'],
         maxlength: [10, '真实姓名不能长于 10 个字符。'],
     },
+    // 邮箱地址
+    email: {
+        type: String,
+        validate: {
+            validator: function (v) {
+                return /^([0-9A-Za-z\-_\.]+)@([0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2})?)$/g.test(v);
+            },
+            message: '邮箱地址格式不正确。'
+        },
+    },
+    // 是否公开邮箱
+    openEmail: {
+        type: Boolean,
+        default: true,
+    },
+    // 手机号码
+    phoneNumber: {
+        type: String,
+        validate: {
+            validator: function (v) {
+                return /^(([0-9]{6})|([0-9]{11}))$/g.test(v);
+            },
+            message: '手机号码格式不正确。'
+        },
+    },
+    // 是否公开手机号码
+    openPhoneNumber: {
+        type: Boolean,
+        default: false,
+    },
     // 性别： -1 不可知， 0 男性， 1 女性
     gender: {
         type: Number,

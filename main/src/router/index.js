@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HelloWorld from '../components/HelloWorld';
+import IndexPage from '../pages/index/index';
 // user
 import UserLoginPage from '../pages/user/login/login';
 import UserRegisterPage from '../pages/user/register/register';
@@ -14,8 +14,10 @@ import MessageSystemPage from '../pages/message/system';
 // association
 import AssociationIndexPage from '../pages/association/index';
 import AssociationDetailPage from '../pages/association/detail';
+import AssociationNoticePage from '../pages/association/notice';
 import AssociationMemberPage from '../pages/association/member';
-import AssociationMassPage from '../pages/association/mass';
+import AssociationManagerPage from '../pages/association/manager';
+import AssociationBusManagerPage from '../pages/association/manager/charteredBus';
 
 Vue.use(Router);
 
@@ -24,9 +26,8 @@ export default new Router({
   routes: [
     {
       path: '/',
-      // name: 'HelloWorld',
-      redirect: '/user',
-      component: HelloWorld,
+      name: '首页',
+      component: IndexPage,
     },
     {
       path: '/login',
@@ -89,14 +90,24 @@ export default new Router({
           component: AssociationDetailPage,
         },
         {
+          path: 'notice',
+          name: '同乡会公告中心',
+          component: AssociationNoticePage,
+        },
+        {
           path: 'member',
           name: '同乡会成员信息',
           component: AssociationMemberPage,
         },
         {
-          path: 'mass',
-          name: '群发消息',
-          component: AssociationMassPage,
+          path: 'manager',
+          name: '同乡会管理中心',
+          component: AssociationManagerPage,
+        },
+        {
+          path: 'bus-manager',
+          name: '同乡会包车管理',
+          component: AssociationBusManagerPage,
         },
       ],
     },

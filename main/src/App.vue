@@ -9,7 +9,7 @@
     <div class="footer-wrapper">
       <v-footer/>
     </div>
-    <v-background/>
+    <!-- <v-background/> -->
   </div>
 </template>
 

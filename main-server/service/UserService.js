@@ -1,6 +1,7 @@
 const BaseService = require('./BaseService');
 const User = require('./../model/user');
 const Association = require('../model/association');
+const MessageService = require('./MessageService');
 
 class UserService extends BaseService {
 
@@ -105,7 +106,9 @@ class UserService extends BaseService {
                 }
                 user[key] = filtered[key];
             }
+            console.log(user);
             const error = this.validate(user);
+            console.log(error);
             if (error) {
                 return error;
             }
@@ -131,6 +134,10 @@ class UserService extends BaseService {
             } else {
                 user.association = association;
                 await user.save();
+                await MessageService.createSystemMessage(
+                    user,
+                    association.joinMsg || '欢迎加入同乡会',
+                    `加入同乡会【${association.name}】成功`)
                 return this.success();
             }
         } else {

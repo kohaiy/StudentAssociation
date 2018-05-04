@@ -6,7 +6,7 @@ export default {
 
   // baseURL: ' https://www.easy-mock.com/mock/5a7186068d311b0183c28670/sa',
   baseURL: 'http://localhost:3000',
-
+  // baseURL: `${window.location.protocol}//api.${window.location.host}`,
   // transformRequest: [(data, headers) => {
   //   // Do whatever you want to transform the data
   //   console.log(headers);

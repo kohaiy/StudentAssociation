@@ -36,6 +36,13 @@ Vue.prototype.$error = function z(err) {
   });
 };
 
+Vue.prototype.apiPath = (() => {
+  if (window.location.host === 'localhost:8080') {
+    return 'http://localhost:3000';
+  }
+  return `${window.location.protocol}//api.${window.location.host}`;
+})();
+
 /**
  * 进入每个页面前验证用户权限
  * 排除两种情况无需验证：
@@ -47,7 +54,7 @@ Vue.prototype.$error = function z(err) {
 router.beforeEach((to, from, next) => {
   // console.log(window.document.title);
   // window.document.title = `to.path: ${to.path}, from: ${from.path}`;
-  console.log(`to.path: ${to.path}, from: ${from.path}`);
+  // console.log(`to.path: ${to.path}, from: ${from.path}`);
   if (config.notAuthPaths.indexOf(to.path) > -1
     || (store.state.user && Date.now() - store.state.lastAuthTime < config.expireTime * 1000)) {
     // 1. 路径无需验证
@@ -62,7 +69,7 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach(((to) => {
-  window.document.title = `${to.name} - 同乡会系统`;
+  window.document.title = `${to.name} - 柯灰同乡网`;
 }));
 
 Vue.filter('formatDate', (date = Date.now(), format = 'YYYY-MM-DD HH:mm:ss') => Moment(date).format(format));
@@ -73,6 +80,12 @@ new Vue({
   el: '#app',
   router,
   store,
+  created() {
+    setTimeout(() => {
+      document.getElementById('app').style.opacity = '1';
+      document.body.removeChild(document.getElementById('app-loading'));
+    }, 2000);
+  },
   components: { App },
   template: '<App/>',
 });

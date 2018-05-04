@@ -22,7 +22,7 @@ const UserService = {
           }
         })
         .catch((error) => {
-          if (error.response) reject(error.response.data);
+          reject(error.data);
         });
     });
   },
@@ -46,7 +46,7 @@ const UserService = {
           }
         })
         .catch((error) => {
-          reject(error.response.data);
+          reject(error.data);
         });
     });
   },
