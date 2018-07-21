@@ -8,6 +8,7 @@ const store = new Vuex.Store({
   plugins: [createPersistedState()],
   state: {
     token: '',
+    isManager: false,
     lastAuthTime: Date.now(),
     user: null,
     unreadBadge: {
@@ -25,6 +26,9 @@ const store = new Vuex.Store({
     },
     user(state, val) {
       state.user = val;
+    },
+    isManager(state, val) {
+      state.isManager = val;
     },
     unread(state, { system, whisper } = {}) {
       if (system === 0 || system) {

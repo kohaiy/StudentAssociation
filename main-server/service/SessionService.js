@@ -42,10 +42,12 @@ class SessionService extends BaseService {
             loginLogs.unshift(Date.now());
             await this.redis().set(`LOGIN:${user._id}`, loginLogs, -1);
             // await MessageService.createSystemMessage(user, '登录成功', '系统消息');
+            let isManager = await this.isManager(user._id.toString());
             // 返回 _id 和 token
             return this.success({
                 _id: user._id,
                 token,
+                isManager,
             });
         }
     }

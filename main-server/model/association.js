@@ -64,7 +64,7 @@ const associationSchema = new Schema({
         type: [{
             type: String,
             minlength: 2,
-            maxlength: 50,
+            maxlength: 20,
         }],
     },
 });

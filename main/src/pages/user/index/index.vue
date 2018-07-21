@@ -8,7 +8,7 @@
       <ul class="list">
         <li class="item">
           <span class="fa fa-address-card"></span>
-          <router-link to="/user">我的信息</router-link>
+          <router-link to="/user/index">我的信息</router-link>
         </li>
         <li class="item">
           <span class="fa fa-key"></span>

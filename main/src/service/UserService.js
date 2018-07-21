@@ -16,6 +16,7 @@ const UserService = {
         .then((res) => {
           if (res.status === 0) {
             store.commit('token', res.data.token);
+            store.commit('isManager', res.data.isManager);
             resolve(res);
           } else {
             reject(res);

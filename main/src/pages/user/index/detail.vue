@@ -52,7 +52,7 @@
           <el-input class="medium-item"
                     @change="updateInfo('phoneNumber')"
                     v-model.trim="user.phoneNumber"></el-input>
-          <el-button @click="changePhoneNumbersDialogVisible = true">更换</el-button>
+          <!--<el-button @click="changePhoneNumbersDialogVisible = true">更换</el-button>-->
           <el-dialog
             title="更换手机号码"
             :visible.sync="changePhoneNumbersDialogVisible">
@@ -324,6 +324,9 @@ export default {
       width: 100px;
       background: #8c939d center;
       background-size: cover;
+    }
+    .avatar-uploader-icon {
+      line-height: 100px;
     }
   }
 }

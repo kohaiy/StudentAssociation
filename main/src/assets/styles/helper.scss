@@ -1,5 +1,9 @@
 @import "variables";
 
+* {
+  font-family: "Times New Roman", Arial, "Microsoft YaHei", "黑体", serif;
+}
+
 // font color
 .text-primary {
   color: $--color-primary !important;
@@ -143,17 +147,18 @@
         height: 40px;
         line-height: 40px;
         transition: color .3s;
-        &:hover {
-          &, a {
-            color: $--color-primary;
-          }
-        }
         .fa {
           margin-right: 10px;
         }
         a {
           text-decoration: none;
           color: #6b757b;
+          &:hover {
+            color: $--color-primary;
+          }
+        }
+        .router-link-active {
+          color: $--color-primary;
         }
       }
     }
@@ -253,6 +258,14 @@
 .el-input-number__decrease .el-icon-minus,
 .el-input-number__increase .el-icon-plus {
   line-height: 38px;
+}
+
+[role=alert].el-message {
+  z-index: 2040;
+}
+
+.el-table__empty-block {
+  height: auto !important;
 }
 
 //.geetest_holder.geetest_wind.geetest_detect {

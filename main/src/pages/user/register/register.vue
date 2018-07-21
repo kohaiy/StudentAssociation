@@ -64,6 +64,23 @@ export default {
   },
   methods: {
     doRegister() {
+      if (this.registerForm.password !== this.registerForm.password2) {
+        this.$message.error('两次密码输入不一致');
+        return;
+      }
+      // 本地状态下，无网络补救方法
+      if (!this.captchaObj && window.location.origin.indexOf('localhost') > -1) {
+        UserService.register(this.registerForm.username, this.registerForm.password)
+          .then(() => {
+            this.$message.success('注册成功！');
+            this.$router.replace({
+              path: '/login',
+            });
+          })
+          .catch((data) => {
+            this.$error(data.message);
+          });
+      }
       const result = this.captchaObj.getValidate();
       if (!result) {
         this.$message.error('请完成验证');

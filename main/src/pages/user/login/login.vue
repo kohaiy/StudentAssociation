@@ -16,8 +16,8 @@
           </div>
         </el-form-item>
         <!--<el-form-item class="clearfix">-->
-          <!--<el-checkbox v-model="loginForm.isRemember">记住密码</el-checkbox>-->
-          <!--<el-button type="text" class="pull-right">忘记密码？</el-button>-->
+        <!--<el-checkbox v-model="loginForm.isRemember">记住密码</el-checkbox>-->
+        <!--<el-button type="text" class="pull-right">忘记密码？</el-button>-->
         <!--</el-form-item>-->
         <el-form-item class="clearfix">
           还没有账号？
@@ -66,6 +66,18 @@ export default {
   },
   methods: {
     doLogin() {
+      // 本地状态下，无网络补救方法
+      if (!this.captchaObj && window.location.origin.indexOf('localhost') > -1) {
+        UserService.login(this.loginForm.username, this.loginForm.password)
+          .then(() => {
+            this.$message.success('登录成功！');
+            this.checkUserStatus();
+          })
+          .catch((data) => {
+            this.$error(data.message);
+          });
+        return;
+      }
       const result = this.captchaObj.getValidate();
       if (!result) {
         this.$message.error('请完成验证');

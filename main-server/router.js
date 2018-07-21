@@ -7,6 +7,9 @@ const UserController = require('./controller/UserController');
 const AssociationController = require('./controller/AssociationController');
 const MessageController = require('./controller/MessageController');
 const NoticeController = require('./controller/NoticeController');
+const CharteredController = require('./controller/CharteredController');
+const TicketController = require('./controller/TicketController');
+const BusController = require('./controller/BusController');
 const UtilController = require('./controller/UtilController');
 
 module.exports = (app) => {
@@ -30,6 +33,18 @@ module.exports = (app) => {
         .post('/association', AssociationController.createAssociation)      // 创建同乡会
         .get('/association/members', AssociationController.getMembers)      // 获取同乡会成员
         .put('/association', AssociationController.update)                  // 更新
+
+        .get('/chartered', CharteredController.get)          // 获取包车信息
+        .get('/chartereds', CharteredController.getAll)          // 获取包车信息
+        .post('/chartered', CharteredController.create)         // 发布包车信息
+        .put('/chartered', CharteredController.update)         // 更改包车信息
+
+        .get('/ticket', TicketController.get)
+        .post('/ticket', TicketController.create)
+        .delete('/ticket/:id', TicketController.delete)
+
+        .get('/bus',BusController.get)
+        .post('/bus',BusController.create)
 
         .get('/messages', MessageController.get)            // 获取消息
         .get('/message/list', MessageController.getMemberList)

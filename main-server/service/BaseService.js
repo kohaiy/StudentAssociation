@@ -1,5 +1,7 @@
-const jwt = require('./../util/jwt');
-const RedisUtil = require('./../util/redis');
+const jwt = require('../util/jwt');
+const RedisUtil = require('../util/redis');
+const User = require('../model/user');
+const Association = require('../model/association');
 
 class BaseService {
 
@@ -69,6 +71,7 @@ class BaseService {
      * @param {String} uid 用户 id
      */
     static async isManager(uid) {
+        uid = uid.toString();
         const manager = await User.findById(uid);
         const association = await Association.findById(manager.association);
         // 为会长 或 manager 是该同乡会管理员 并且

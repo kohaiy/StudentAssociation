@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import IndexPage from '../pages/index/index';
+// import IndexPage from '../pages/index/index';
 // user
 import UserLoginPage from '../pages/user/login/login';
 import UserRegisterPage from '../pages/user/register/register';
@@ -17,7 +17,8 @@ import AssociationDetailPage from '../pages/association/detail';
 import AssociationNoticePage from '../pages/association/notice';
 import AssociationMemberPage from '../pages/association/member';
 import AssociationManagerPage from '../pages/association/manager';
-import AssociationBusManagerPage from '../pages/association/manager/charteredBus';
+import AssociationBusCenterPage from '../pages/association/manager/charteredBus';
+import AssociationBusManagerPage from '../pages/association/manager/charteredBus/manager/index';
 
 Vue.use(Router);
 
@@ -26,8 +27,9 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: '首页',
-      component: IndexPage,
+      // name: '首页',
+      // component: IndexPage,
+      redirect: '/user',
     },
     {
       path: '/login',
@@ -45,6 +47,10 @@ export default new Router({
       children: [
         {
           path: '/',
+          redirect: 'index',
+        },
+        {
+          path: 'index',
           name: '我的信息',
           component: UserDetailPage,
         },
@@ -86,6 +92,10 @@ export default new Router({
       children: [
         {
           path: '/',
+          redirect: 'index',
+        },
+        {
+          path: 'index',
           name: '我的同乡会',
           component: AssociationDetailPage,
         },
@@ -105,7 +115,12 @@ export default new Router({
           component: AssociationManagerPage,
         },
         {
-          path: 'bus-manager',
+          path: 'bus-center',
+          name: '同乡会包车中心',
+          component: AssociationBusCenterPage,
+        },
+        {
+          path: 'bus-manager/:id',
           name: '同乡会包车管理',
           component: AssociationBusManagerPage,
         },

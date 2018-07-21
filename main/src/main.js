@@ -10,13 +10,14 @@ import './assets/styles/helper.scss';
 import App from './App';
 import router from './router';
 import store from './store';
+// moment.js 中文化
+import './utils/moment_zh';
 
 import UserService from './service/UserService';
 import config from './config';
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
-
 Vue.prototype.moment = Moment;
 Vue.prototype.$loadingDelayTime = config.loadingDelayTime;
 Vue.prototype.$isClearConsole = config.isClearConsole;

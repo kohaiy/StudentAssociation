@@ -18,7 +18,7 @@ footer {
   overflow: hidden;
   .footer-copyright {
     line-height: 50px;
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 </style>

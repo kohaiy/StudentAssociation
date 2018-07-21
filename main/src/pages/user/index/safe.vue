@@ -14,42 +14,42 @@
         </el-form-item>
       </el-form>
     </div>
-    <div class="item account-association">
-      <div class="title"><span class="fa fa-link"></span>账号关联</div>
-      <el-form label-width="82px">
-        <el-form-item label="手机号码：" class="phone-numbers">
-          <el-input value="13535353535" class="short-item" disabled></el-input>
-          <el-button
-            @click="changePhoneNumbersDialogVisible = true" type="text">更换手机号
-          </el-button>
-          <el-dialog
-            title="更换手机号码"
-            size="400px"
-            :visible.sync="changePhoneNumbersDialogVisible">
-            <el-input v-model.trim="phoneNumbers" placeholder="请输入手机号码"></el-input>
-            <div class="body clearfix">
-              <div class="phone-input pull-left">
-                <el-input v-model.trim="captcha" placeholder="请输入验证码"></el-input>
-              </div>
-              <div class="send-button pull-right">
-                <el-button @click="sendCaptcha" :disabled="!!sendCaptchaDelay">
-                  {{sendCaptchaDelay ? `${sendCaptchaDelay}秒后重试` : '获取验证码'}}
-                </el-button>
-              </div>
-            </div>
-            <div slot="footer" class="dialog-footer">
-              <el-button @click="changePhoneNumbersDialogVisible = false">取 消</el-button>
-              <el-button type="primary"
-                         @click="changePhoneNumbersDialogVisible = false">确 定
-              </el-button>
-            </div>
-          </el-dialog>
-        </el-form-item>
-        <el-form-item label="邮箱地址：">
-          <el-input class="short-item"></el-input>
-        </el-form-item>
-      </el-form>
-    </div>
+    <!--<div class="item account-association">-->
+      <!--<div class="title"><span class="fa fa-link"></span>账号关联</div>-->
+      <!--<el-form label-width="82px">-->
+        <!--<el-form-item label="手机号码：" class="phone-numbers">-->
+          <!--<el-input value="13535353535" class="short-item" disabled></el-input>-->
+          <!--<el-button-->
+            <!--@click="changePhoneNumbersDialogVisible = true" type="text">更换手机号-->
+          <!--</el-button>-->
+          <!--<el-dialog-->
+            <!--title="更换手机号码"-->
+            <!--size="400px"-->
+            <!--:visible.sync="changePhoneNumbersDialogVisible">-->
+            <!--<el-input v-model.trim="phoneNumbers" placeholder="请输入手机号码"></el-input>-->
+            <!--<div class="body clearfix">-->
+              <!--<div class="phone-input pull-left">-->
+                <!--<el-input v-model.trim="captcha" placeholder="请输入验证码"></el-input>-->
+              <!--</div>-->
+              <!--<div class="send-button pull-right">-->
+                <!--<el-button @click="sendCaptcha" :disabled="!!sendCaptchaDelay">-->
+                  <!--{{sendCaptchaDelay ? `${sendCaptchaDelay}秒后重试` : '获取验证码'}}-->
+                <!--</el-button>-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div slot="footer" class="dialog-footer">-->
+              <!--<el-button @click="changePhoneNumbersDialogVisible = false">取 消</el-button>-->
+              <!--<el-button type="primary"-->
+                         <!--@click="changePhoneNumbersDialogVisible = false">确 定-->
+              <!--</el-button>-->
+            <!--</div>-->
+          <!--</el-dialog>-->
+        <!--</el-form-item>-->
+        <!--<el-form-item label="邮箱地址：">-->
+          <!--<el-input class="short-item"></el-input>-->
+        <!--</el-form-item>-->
+      <!--</el-form>-->
+    <!--</div>-->
     <div class="item login-logs">
       <div class="title"><span class="fa fa-file-text"></span>登录日志</div>
       <ul>

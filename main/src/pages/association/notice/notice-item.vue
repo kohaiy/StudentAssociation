@@ -10,7 +10,7 @@
     <div v-if="notice.images.length > 0" class="images">
       <span @click="loadLargeImage(img)" v-for="img in notice.images" :key="img" class="image">
         <span class="large fa fa-search"></span>
-        <img :src="img+ '&thumb'" alt="公告图片">
+        <img :src="img" alt="公告图片">
       </span>
       <el-dialog
         size="500px"

@@ -25,7 +25,7 @@
                         :content="scope.row.isChairman ? '会长' : '管理员'"
                         placement="right">
               <span v-if="scope.row.isManager" class="el-icon-star-on text-primary"></span>
-              <span v-else class="fa fa-angellist text-primary"></span>
+              <span v-else class="fa fa-certificate text-primary"></span>
             </el-tooltip>
             <el-tooltip v-if="$store.state.user._id !== scope.row._id" effect="dark"
                         content="发送消息"

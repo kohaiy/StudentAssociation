@@ -9,14 +9,23 @@ const ticketSchema = new Schema({
         ref: 'User',
         required: [true, '成员信息不能为空。'],
     },
-    charteredBus: {
+    // 所属包车信息
+    chartered: {
         type: Schema.Types.ObjectId,
-        ref: 'CharteredBus',
+        ref: 'Chartered',
     },
+    // 所属车辆
+    bus: {
+        type: Schema.Types.ObjectId,
+        ref: 'Bus',
+        default: null,
+    },
+    // 手机号码
     phone: {
         type: String,
-        required: [true, '登记成员联系方式不能为空。']
+        required: [true, '联系方式不能为空。']
     },
+    // 票数
     quantity: {
         type: Number,
         min: [1, '选取票数不能少于 1 张。'],
@@ -24,15 +33,15 @@ const ticketSchema = new Schema({
     },
     // 上车地点
     startPlace: {
-        type: [String],
-        required: [true, '出发地不能为空。'],
+        type: String,
+        required: [true, '上车地点不能为空。'],
     },
     // 下车地点
     endPlace: {
-        type: [String],
-        required: [true, '目的地不能为空。'],
+        type: String,
+        required: [true, '下车地点不能为空。'],
     },
-    // 创建时间
+    // 登记时间
     createTime: {
         type: Date,
         default: Date.now,
